@@ -178,7 +178,7 @@
         <div class="lang" role="group" aria-label="Language">
           <button type="button" data-lang="en">EN</button>
           <button type="button" data-lang="zh-Hans">简</button>
-          <button type="button" data-lang="zh-HK">繁</button>
+          <button type="button" data-lang="yue">粵</button>
         </div>
         <button id="theme" type="button" aria-label="Toggle theme">◐</button>
       </div>
@@ -364,33 +364,33 @@
         contactText: "欢迎合作、反馈与开源协作。",
         btnEmailMe: "给我发邮件", footerEmail: "邮箱"
       },
-      "zh-HK": {
+      "yue": {
         title: "Henry Liu — AI · 軟件 · 開源",
-        navProjects: "專案", navToolbox: "工具箱", navAbout: "關於",
+        navProjects: "專案", navToolbox: "架生", navAbout: "關於",
         eyebrow: "AI · 軟件 · 開源",
-        lead: '我建立工具、鑽研系統，將雜亂的技術流程變成<span class="accent-text">可以理解、可以自動化</span>的東西。',
-        ctaDocs: "瀏覽 DevConfig-Gen →", ctaEmail: "電郵",
-        metricProviders: "內建 Provider", metricTests: "測試通過",
-        metricDeps: "執行時依賴", metricVersion: "目前版本",
+        lead: '我整工具、鑽研系統，將啲亂七八糟嘅技術流程，變到<span class="accent-text">睇得明、自動得到</span>嘅嘢。',
+        ctaDocs: "睇下 DevConfig-Gen →", ctaEmail: "電郵",
+        metricProviders: "內建 Provider", metricTests: "測試過關",
+        metricDeps: "執行時依賴", metricVersion: "而家版本",
         hProjects: "專案", badgeOpen: "開源",
-        projectDesc: "一個本地運行、以 Provider 為核心的結構化配置生成與驗證引擎。它合併多個 JSON/YAML 輸入、套用覆寫、逐欄驗證，並輸出確定性的 JSON、YAML 或 .env 產物——不連接網絡、不修改系統。",
-        f1: "Provider 驅動的生成流程",
-        f2: '多來源深度合併與 <code>--set</code> 覆寫',
-        f3: "精確到欄位路徑的驗證診斷",
-        f4: "CLI、終端精靈與本地 Web 工作台",
-        f5: '確定性的 JSON / YAML / <code>.env</code> 輸出',
+        projectDesc: "一個喺本地行、以 Provider 為核心嘅結構化配置生成同驗證引擎。佢會合併多個 JSON/YAML 輸入、套用覆寫、逐個欄位驗證，再輸出穩定嘅 JSON、YAML 或者 .env 產物——唔連網、唔郁你部機。",
+        f1: "Provider 帶住嘅生成流程",
+        f2: '多來源深度合併同 <code>--set</code> 覆寫',
+        f3: "準到欄位路徑嘅驗證診斷",
+        f4: "CLI、終端精靈同本地 Web 工作台",
+        f5: '穩定嘅 JSON / YAML / <code>.env</code> 輸出',
         f6: "零執行時依賴",
         btnDocs: "文件", btnSource: "原始碼", btnArch: "架構",
-        hToolbox: "工具箱",
-        chipCli: "CLI / 自動化", chipTooling: "開發者工具",
+        hToolbox: "架生",
+        chipCli: "CLI / 自動化", chipTooling: "開發者架生",
         chipOss: "開源", chipWriting: "技術寫作",
         hAbout: "關於",
-        about1: '我在意那些<strong>本地、確定、易於自動化</strong>的工具——可以閱讀、測試、信任，而沒有一個隱藏的控制面。',
-        about2: "我專注開發者工具與自動化：把重複、易錯的配置工作，變成任何人都能執行和推理的清晰流程。",
-        about3: '我橫跨 <strong>AI、軟件與開源</strong>，喜歡三者交界處的專案——細小鋒利、令工作流消失的工具。',
-        about4: "我交付的一切都有文件、有測試、可重現。如果它不能被理解，也就無法被很好地自動化。",
-        hContact: "聯絡", contactTitle: "一起做點有用的東西。",
-        contactText: "歡迎合作、回饋與開源協作。",
+        about1: '我鍾意啲<strong>本地、穩定、易自動化</strong>嘅工具——睇得到、測得到、信得過，冇隱藏嘅控制台。',
+        about2: "我專攻開發者工具同自動化：將啲重複又易錯嘅配置工作，變成人人都行得順、睇得明嘅清晰流程。",
+        about3: '我橫跨 <strong>AI、軟件同開源</strong>，最鍾意企喺三者交界嘅專案——細細粒但好利，令成個工作流消失嘅工具。',
+        about4: "我出嘅嘢都有文件、有測試、可重現。睇唔明嘅話，就自動化唔到。",
+        hContact: "聯絡", contactTitle: "一齊整啲有用嘅嘢。",
+        contactText: "歡迎合作、畀下意見、一齊搞開源。",
         btnEmailMe: "電郵我", footerEmail: "電郵"
       }
     };
@@ -418,7 +418,7 @@
       if (saved && I18N[saved]) return saved;
       var nav = (navigator.language || "en").toLowerCase();
       if (nav.indexOf("zh") === 0) {
-        return /hant|hk|tw|mo|yue/.test(nav) ? "zh-HK" : "zh-Hans";
+        return /hant|hk|tw|mo|yue/.test(nav) ? "yue" : "zh-Hans";
       }
       return "en";
     }
