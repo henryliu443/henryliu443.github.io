@@ -9,7 +9,6 @@
   <style>
     :root {
       --bg: #fbfbfd;
-      --bg-soft: #f4f4f6;
       --fg: #111113;
       --muted: #6b6b74;
       --line: #e6e6ea;
@@ -21,7 +20,6 @@
     }
     [data-theme="dark"] {
       --bg: #08080a;
-      --bg-soft: #101013;
       --fg: #f5f5f7;
       --muted: #9a9aa3;
       --line: #24242a;
@@ -34,7 +32,8 @@
     html { scroll-behavior: smooth; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-        Helvetica, Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
+        Helvetica, Arial, "PingFang SC", "PingFang HK", "Microsoft JhengHei",
+        "Microsoft YaHei", sans-serif;
       background: var(--bg);
       color: var(--fg);
       line-height: 1.65;
@@ -48,8 +47,13 @@
       background-clip: text;
       color: transparent;
     }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: .88em;
+      background: color-mix(in srgb, var(--muted) 14%, transparent);
+      padding: .08em .35em; border-radius: 5px;
+    }
 
-    /* Nav */
     nav {
       position: sticky; top: 0; z-index: 50;
       backdrop-filter: saturate(180%) blur(14px);
@@ -57,43 +61,38 @@
       background: color-mix(in srgb, var(--bg) 78%, transparent);
       border-bottom: 1px solid var(--line);
     }
-    .nav-inner {
-      display: flex; align-items: center; justify-content: space-between;
-      height: 60px;
-    }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 60px; }
     .brand { font-weight: 700; letter-spacing: -0.01em; text-decoration: none; }
+    .nav-right { display: flex; align-items: center; gap: 1.1rem; }
     .nav-links { display: flex; align-items: center; gap: 1.25rem; font-size: .9rem; }
     .nav-links a { text-decoration: none; color: var(--muted); }
     .nav-links a:hover { color: var(--fg); }
+    .lang {
+      display: inline-flex; border: 1px solid var(--line); border-radius: 9px;
+      overflow: hidden; background: var(--card);
+    }
+    .lang button {
+      border: 0; background: transparent; color: var(--muted);
+      font: inherit; font-size: .78rem; font-weight: 600;
+      padding: .3rem .5rem; cursor: pointer;
+    }
+    .lang button.active { background: var(--accent); color: var(--accent-fg); }
     #theme {
       border: 1px solid var(--line); background: var(--card); color: var(--fg);
-      width: 34px; height: 34px; border-radius: 9px; cursor: pointer;
-      font-size: 15px; line-height: 1;
+      width: 34px; height: 34px; border-radius: 9px; cursor: pointer; font-size: 15px; line-height: 1;
     }
     #theme:hover { border-color: var(--accent); }
-    @media (max-width: 620px) { .nav-links a:not(.keep) { display: none; } }
+    @media (max-width: 720px) { .nav-links { display: none; } }
 
-    /* Hero */
     header { padding: 5.5rem 0 4rem; position: relative; overflow: hidden; }
     header::before {
-      content: ""; position: absolute; inset: -40% 30% auto -10%;
-      height: 520px;
+      content: ""; position: absolute; inset: -40% 30% auto -10%; height: 520px;
       background: radial-gradient(closest-side, color-mix(in srgb, var(--accent) 22%, transparent), transparent 70%);
       filter: blur(10px); pointer-events: none;
     }
-    .eyebrow {
-      font-size: .82rem; font-weight: 700; letter-spacing: .16em;
-      text-transform: uppercase; color: var(--muted);
-    }
-    h1 {
-      margin-top: 1rem;
-      font-size: clamp(2.6rem, 8vw, 4.4rem);
-      line-height: 1.02; letter-spacing: -0.035em; font-weight: 800;
-    }
-    .lead {
-      margin-top: 1.5rem; max-width: 38rem;
-      font-size: clamp(1.05rem, 2.4vw, 1.3rem); color: var(--muted);
-    }
+    .eyebrow { font-size: .82rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
+    h1 { margin-top: 1rem; font-size: clamp(2.6rem, 8vw, 4.4rem); line-height: 1.02; letter-spacing: -0.035em; font-weight: 800; }
+    .lead { margin-top: 1.5rem; max-width: 40rem; font-size: clamp(1.05rem, 2.4vw, 1.3rem); color: var(--muted); }
     .cta { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 2rem; }
     .btn {
       display: inline-flex; align-items: center; gap: .45rem;
@@ -110,32 +109,20 @@
     }
     .btn.primary:hover { opacity: .93; }
 
-    /* Metrics */
     .metrics {
       display: grid; grid-template-columns: repeat(4, 1fr);
       gap: 1px; background: var(--line);
-      border: 1px solid var(--line); border-radius: 14px; overflow: hidden;
-      margin-top: 3.5rem;
+      border: 1px solid var(--line); border-radius: 14px; overflow: hidden; margin-top: 3.5rem;
     }
     .metric { background: var(--card); padding: 1.1rem 1.25rem; }
     .metric b { display: block; font-size: 1.35rem; letter-spacing: -0.02em; }
     .metric span { font-size: .8rem; color: var(--muted); }
-    @media (max-width: 620px) {
-      .metrics { grid-template-columns: repeat(2, 1fr); }
-    }
+    @media (max-width: 620px) { .metrics { grid-template-columns: repeat(2, 1fr); } }
 
-    /* Sections */
     section { padding: 4rem 0; border-top: 1px solid var(--line); }
-    h2 {
-      font-size: .8rem; font-weight: 700; letter-spacing: .14em;
-      text-transform: uppercase; color: var(--muted); margin-bottom: 1.75rem;
-    }
+    h2 { font-size: .8rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin-bottom: 1.75rem; }
 
-    /* Project card */
-    .project {
-      background: var(--card); border: 1px solid var(--line);
-      border-radius: 16px; padding: 1.75rem; box-shadow: var(--shadow);
-    }
+    .project { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 1.75rem; box-shadow: var(--shadow); }
     .project-top { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
     .project h3 { font-size: 1.35rem; letter-spacing: -0.02em; }
     .badge {
@@ -143,26 +130,15 @@
       color: var(--accent); border: 1px solid color-mix(in srgb, var(--accent) 40%, var(--line));
       border-radius: 999px; padding: .2rem .6rem;
     }
-    .project .desc { color: var(--muted); margin-top: .5rem; max-width: 44rem; }
-    .features {
-      list-style: none; margin-top: 1.25rem;
-      display: grid; grid-template-columns: 1fr 1fr; gap: .55rem 1.5rem;
-      font-size: .92rem;
-    }
-    .features li { padding-left: 1.4rem; position: relative; color: var(--fg); }
-    .features li::before {
-      content: "→"; position: absolute; left: 0; color: var(--accent);
-    }
+    .project .desc { color: var(--muted); margin-top: .5rem; max-width: 46rem; }
+    .features { list-style: none; margin-top: 1.25rem; display: grid; grid-template-columns: 1fr 1fr; gap: .55rem 1.5rem; font-size: .92rem; }
+    .features li { padding-left: 1.4rem; position: relative; }
+    .features li::before { content: "→"; position: absolute; left: 0; color: var(--accent); }
     @media (max-width: 620px) { .features { grid-template-columns: 1fr; } }
     .links { display: flex; flex-wrap: wrap; gap: .7rem; margin-top: 1.5rem; }
 
-    /* Chips */
     .chips { display: flex; flex-wrap: wrap; gap: .5rem; }
-    .chip {
-      font-size: .85rem; color: var(--muted);
-      border: 1px solid var(--line); background: var(--card);
-      border-radius: 999px; padding: .35rem .85rem;
-    }
+    .chip { font-size: .85rem; color: var(--muted); border: 1px solid var(--line); background: var(--card); border-radius: 999px; padding: .35rem .85rem; }
 
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; }
     @media (max-width: 720px) { .grid-2 { grid-template-columns: 1fr; } }
@@ -170,20 +146,18 @@
     .prose p + p { margin-top: 1rem; }
     .prose strong { color: var(--fg); font-weight: 600; }
 
-    /* Contact */
     .contact {
       background: linear-gradient(120deg, color-mix(in srgb, var(--accent) 10%, var(--card)), var(--card));
-      border: 1px solid var(--line); border-radius: 16px;
-      padding: 2rem; display: flex; align-items: center; justify-content: space-between;
-      gap: 1.5rem; flex-wrap: wrap;
+      border: 1px solid var(--line); border-radius: 16px; padding: 2rem;
+      display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap;
     }
     .contact h3 { font-size: 1.25rem; letter-spacing: -0.02em; }
     .contact p { color: var(--muted); margin-top: .35rem; }
 
     footer {
       padding: 2.5rem 0 4rem; border-top: 1px solid var(--line);
-      display: flex; flex-wrap: wrap; justify-content: space-between;
-      gap: 1rem; color: var(--muted); font-size: .88rem;
+      display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem;
+      color: var(--muted); font-size: .88rem;
     }
     footer a { text-decoration: none; }
     footer a:hover { color: var(--accent); }
@@ -194,11 +168,18 @@
   <nav>
     <div class="wrap nav-inner">
       <a class="brand" href="#top">Henry Liu</a>
-      <div class="nav-links">
-        <a href="#projects">Projects</a>
-        <a href="#toolbox">Toolbox</a>
-        <a href="#about">About</a>
-        <a class="keep" href="https://github.com/henryliu443">GitHub</a>
+      <div class="nav-right">
+        <div class="nav-links">
+          <a href="#projects" data-i18n="navProjects">Projects</a>
+          <a href="#toolbox" data-i18n="navToolbox">Toolbox</a>
+          <a href="#about" data-i18n="navAbout">About</a>
+          <a href="https://github.com/henryliu443">GitHub</a>
+        </div>
+        <div class="lang" role="group" aria-label="Language">
+          <button type="button" data-lang="en">EN</button>
+          <button type="button" data-lang="zh-Hans">简</button>
+          <button type="button" data-lang="zh-HK">繁</button>
+        </div>
         <button id="theme" type="button" aria-label="Toggle theme">◐</button>
       </div>
     </div>
@@ -206,93 +187,93 @@
 
   <div class="wrap" id="top">
     <header>
-      <p class="eyebrow">AI · Software · Open Source</p>
+      <p class="eyebrow" data-i18n="eyebrow">AI · Software · Open Source</p>
       <h1>Henry Liu</h1>
-      <p class="lead">
+      <p class="lead" data-i18n-html="lead">
         I build tools, experiment with systems, and turn messy technical
         workflows into something that can be <span class="accent-text">understood
         and automated</span>.
       </p>
       <div class="cta">
-        <a class="btn primary" href="https://henryliu443.github.io/DevConfig-Gen/">Explore DevConfig-Gen →</a>
+        <a class="btn primary" href="https://henryliu443.github.io/DevConfig-Gen/" data-i18n="ctaDocs">Explore DevConfig-Gen →</a>
         <a class="btn" href="https://github.com/henryliu443">GitHub</a>
-        <a class="btn" href="mailto:henryliu443@gmail.com">Email</a>
+        <a class="btn" href="mailto:henryliu443@gmail.com" data-i18n="ctaEmail">Email</a>
       </div>
 
       <div class="metrics">
-        <div class="metric"><b>3</b><span>built-in providers</span></div>
-        <div class="metric"><b>135</b><span>tests passing</span></div>
-        <div class="metric"><b>0</b><span>runtime dependencies</span></div>
-        <div class="metric"><b>1.0.0</b><span>current release</span></div>
+        <div class="metric"><b>3</b><span data-i18n="metricProviders">built-in providers</span></div>
+        <div class="metric"><b>135</b><span data-i18n="metricTests">tests passing</span></div>
+        <div class="metric"><b>0</b><span data-i18n="metricDeps">runtime dependencies</span></div>
+        <div class="metric"><b>1.0.0</b><span data-i18n="metricVersion">current release</span></div>
       </div>
     </header>
 
     <section id="projects">
-      <h2>Projects</h2>
+      <h2 data-i18n="hProjects">Projects</h2>
       <article class="project">
         <div class="project-top">
           <h3>DevConfig-Gen</h3>
-          <span class="badge">Open Source</span>
+          <span class="badge" data-i18n="badgeOpen">Open Source</span>
         </div>
-        <p class="desc">
+        <p class="desc" data-i18n="projectDesc">
           A local, provider-based engine for generating and validating structured
           configuration. It merges multiple JSON/YAML inputs, applies overrides,
           validates every field, and produces deterministic JSON, YAML, or
-          <code>.env</code> artifacts — with no network or system side effects.
+          .env artifacts — with no network or system side effects.
         </p>
         <ul class="features">
-          <li>Provider-based generation pipeline</li>
-          <li>Multi-source deep merge &amp; <code>--set</code> overrides</li>
-          <li>Precise, path-aware validation diagnostics</li>
-          <li>CLI, terminal wizard, and local Web studio</li>
-          <li>Deterministic JSON / YAML / <code>.env</code> output</li>
-          <li>Zero runtime dependencies</li>
+          <li data-i18n="f1">Provider-based generation pipeline</li>
+          <li data-i18n-html="f2">Multi-source deep merge &amp; <code>--set</code> overrides</li>
+          <li data-i18n="f3">Precise, path-aware validation diagnostics</li>
+          <li data-i18n="f4">CLI, terminal wizard, and local Web studio</li>
+          <li data-i18n-html="f5">Deterministic JSON / YAML / <code>.env</code> output</li>
+          <li data-i18n="f6">Zero runtime dependencies</li>
         </ul>
         <div class="links">
-          <a class="btn primary" href="https://henryliu443.github.io/DevConfig-Gen/">Documentation</a>
-          <a class="btn" href="https://github.com/henryliu443/DevConfig-Gen">Source</a>
-          <a class="btn" href="https://github.com/henryliu443/DevConfig-Gen/blob/main/ARCHITECTURE.md">Architecture</a>
+          <a class="btn primary" href="https://henryliu443.github.io/DevConfig-Gen/" data-i18n="btnDocs">Documentation</a>
+          <a class="btn" href="https://github.com/henryliu443/DevConfig-Gen" data-i18n="btnSource">Source</a>
+          <a class="btn" href="https://github.com/henryliu443/DevConfig-Gen/blob/main/ARCHITECTURE.md" data-i18n="btnArch">Architecture</a>
         </div>
       </article>
     </section>
 
     <section id="toolbox">
-      <h2>Toolbox</h2>
+      <h2 data-i18n="hToolbox">Toolbox</h2>
       <div class="chips">
         <span class="chip">Python</span>
-        <span class="chip">CLI / Automation</span>
+        <span class="chip" data-i18n="chipCli">CLI / Automation</span>
         <span class="chip">JSON / YAML</span>
-        <span class="chip">Developer Tooling</span>
+        <span class="chip" data-i18n="chipTooling">Developer Tooling</span>
         <span class="chip">AI</span>
-        <span class="chip">Open Source</span>
+        <span class="chip" data-i18n="chipOss">Open Source</span>
         <span class="chip">GitHub Actions</span>
         <span class="chip">MkDocs</span>
-        <span class="chip">Technical Writing</span>
+        <span class="chip" data-i18n="chipWriting">Technical Writing</span>
       </div>
     </section>
 
     <section id="about">
-      <h2>About</h2>
+      <h2 data-i18n="hAbout">About</h2>
       <div class="grid-2">
         <div class="prose">
-          <p>
+          <p data-i18n-html="about1">
             I care about tools that are <strong>local, deterministic, and easy
             to automate</strong> — software you can read, test, and trust without
             a hidden control plane.
           </p>
-          <p>
+          <p data-i18n="about2">
             My focus is on developer tooling and automation: taking repetitive,
             error-prone configuration work and turning it into a clear pipeline
             that anyone can run and reason about.
           </p>
         </div>
         <div class="prose">
-          <p>
+          <p data-i18n-html="about3">
             I work across <strong>AI, software, and open source</strong>, and I
             like projects that sit at the intersection of the three — small,
             sharp tools that make a workflow disappear.
           </p>
-          <p>
+          <p data-i18n="about4">
             Everything I ship is documented, tested, and reproducible. If it
             can't be understood, it can't be automated well.
           </p>
@@ -301,14 +282,14 @@
     </section>
 
     <section id="contact">
-      <h2>Contact</h2>
+      <h2 data-i18n="hContact">Contact</h2>
       <div class="contact">
         <div>
-          <h3>Let's build something useful.</h3>
-          <p>Open to collaboration, feedback, and open-source work.</p>
+          <h3 data-i18n="contactTitle">Let's build something useful.</h3>
+          <p data-i18n="contactText">Open to collaboration, feedback, and open-source work.</p>
         </div>
         <div class="links" style="margin-top:0">
-          <a class="btn primary" href="mailto:henryliu443@gmail.com">Email me</a>
+          <a class="btn primary" href="mailto:henryliu443@gmail.com" data-i18n="btnEmailMe">Email me</a>
           <a class="btn" href="https://github.com/henryliu443">GitHub</a>
         </div>
       </div>
@@ -318,22 +299,146 @@
       <span>© <span id="year">2026</span> Henry Liu</span>
       <span class="footer-links">
         <a href="https://github.com/henryliu443">GitHub</a>
-        <a href="mailto:henryliu443@gmail.com">Email</a>
+        <a href="mailto:henryliu443@gmail.com" data-i18n="footerEmail">Email</a>
       </span>
     </footer>
   </div>
 
   <script>
+    var I18N = {
+      "en": {
+        title: "Henry Liu — AI · Software · Open Source",
+        navProjects: "Projects", navToolbox: "Toolbox", navAbout: "About",
+        eyebrow: "AI · Software · Open Source",
+        lead: 'I build tools, experiment with systems, and turn messy technical workflows into something that can be <span class="accent-text">understood and automated</span>.',
+        ctaDocs: "Explore DevConfig-Gen →", ctaEmail: "Email",
+        metricProviders: "built-in providers", metricTests: "tests passing",
+        metricDeps: "runtime dependencies", metricVersion: "current release",
+        hProjects: "Projects", badgeOpen: "Open Source",
+        projectDesc: "A local, provider-based engine for generating and validating structured configuration. It merges multiple JSON/YAML inputs, applies overrides, validates every field, and produces deterministic JSON, YAML, or .env artifacts — with no network or system side effects.",
+        f1: "Provider-based generation pipeline",
+        f2: 'Multi-source deep merge &amp; <code>--set</code> overrides',
+        f3: "Precise, path-aware validation diagnostics",
+        f4: "CLI, terminal wizard, and local Web studio",
+        f5: 'Deterministic JSON / YAML / <code>.env</code> output',
+        f6: "Zero runtime dependencies",
+        btnDocs: "Documentation", btnSource: "Source", btnArch: "Architecture",
+        hToolbox: "Toolbox",
+        chipCli: "CLI / Automation", chipTooling: "Developer Tooling",
+        chipOss: "Open Source", chipWriting: "Technical Writing",
+        hAbout: "About",
+        about1: 'I care about tools that are <strong>local, deterministic, and easy to automate</strong> — software you can read, test, and trust without a hidden control plane.',
+        about2: "My focus is on developer tooling and automation: taking repetitive, error-prone configuration work and turning it into a clear pipeline that anyone can run and reason about.",
+        about3: 'I work across <strong>AI, software, and open source</strong>, and I like projects that sit at the intersection of the three — small, sharp tools that make a workflow disappear.',
+        about4: "Everything I ship is documented, tested, and reproducible. If it can't be understood, it can't be automated well.",
+        hContact: "Contact", contactTitle: "Let's build something useful.",
+        contactText: "Open to collaboration, feedback, and open-source work.",
+        btnEmailMe: "Email me", footerEmail: "Email"
+      },
+      "zh-Hans": {
+        title: "Henry Liu — AI · 软件 · 开源",
+        navProjects: "项目", navToolbox: "工具箱", navAbout: "关于",
+        eyebrow: "AI · 软件 · 开源",
+        lead: '我构建工具、折腾系统，把杂乱的技术流程变成<span class="accent-text">可被理解、可被自动化</span>的东西。',
+        ctaDocs: "浏览 DevConfig-Gen →", ctaEmail: "邮箱",
+        metricProviders: "内置 Provider", metricTests: "测试通过",
+        metricDeps: "运行时依赖", metricVersion: "当前版本",
+        hProjects: "项目", badgeOpen: "开源",
+        projectDesc: "一个本地运行、以 Provider 为核心的结构化配置生成与校验引擎。它合并多个 JSON/YAML 输入、应用覆盖、逐字段校验，并输出确定性的 JSON、YAML 或 .env 产物——不访问网络、不修改系统。",
+        f1: "Provider 驱动的生成流水线",
+        f2: '多源深度合并与 <code>--set</code> 覆盖',
+        f3: "精确到字段路径的校验诊断",
+        f4: "CLI、终端向导与本地 Web 工作台",
+        f5: '确定性的 JSON / YAML / <code>.env</code> 输出',
+        f6: "零运行时依赖",
+        btnDocs: "文档", btnSource: "源码", btnArch: "架构",
+        hToolbox: "工具箱",
+        chipCli: "CLI / 自动化", chipTooling: "开发者工具",
+        chipOss: "开源", chipWriting: "技术写作",
+        hAbout: "关于",
+        about1: '我在意那些<strong>本地、确定、易于自动化</strong>的工具——可以阅读、测试、信任，而没有一个隐藏的控制面。',
+        about2: "我关注开发者工具与自动化：把重复、易错的配置工作，变成任何人都能运行和推理的清晰流水线。",
+        about3: '我横跨 <strong>AI、软件与开源</strong>，喜欢三者交界处的项目——小而锋利、让工作流消失的工具。',
+        about4: "我交付的一切都有文档、有测试、可复现。如果它不能被理解，也就无法被很好地自动化。",
+        hContact: "联系", contactTitle: "一起做点有用的东西。",
+        contactText: "欢迎合作、反馈与开源协作。",
+        btnEmailMe: "给我发邮件", footerEmail: "邮箱"
+      },
+      "zh-HK": {
+        title: "Henry Liu — AI · 軟件 · 開源",
+        navProjects: "專案", navToolbox: "工具箱", navAbout: "關於",
+        eyebrow: "AI · 軟件 · 開源",
+        lead: '我建立工具、鑽研系統，將雜亂的技術流程變成<span class="accent-text">可以理解、可以自動化</span>的東西。',
+        ctaDocs: "瀏覽 DevConfig-Gen →", ctaEmail: "電郵",
+        metricProviders: "內建 Provider", metricTests: "測試通過",
+        metricDeps: "執行時依賴", metricVersion: "目前版本",
+        hProjects: "專案", badgeOpen: "開源",
+        projectDesc: "一個本地運行、以 Provider 為核心的結構化配置生成與驗證引擎。它合併多個 JSON/YAML 輸入、套用覆寫、逐欄驗證，並輸出確定性的 JSON、YAML 或 .env 產物——不連接網絡、不修改系統。",
+        f1: "Provider 驅動的生成流程",
+        f2: '多來源深度合併與 <code>--set</code> 覆寫',
+        f3: "精確到欄位路徑的驗證診斷",
+        f4: "CLI、終端精靈與本地 Web 工作台",
+        f5: '確定性的 JSON / YAML / <code>.env</code> 輸出',
+        f6: "零執行時依賴",
+        btnDocs: "文件", btnSource: "原始碼", btnArch: "架構",
+        hToolbox: "工具箱",
+        chipCli: "CLI / 自動化", chipTooling: "開發者工具",
+        chipOss: "開源", chipWriting: "技術寫作",
+        hAbout: "關於",
+        about1: '我在意那些<strong>本地、確定、易於自動化</strong>的工具——可以閱讀、測試、信任，而沒有一個隱藏的控制面。',
+        about2: "我專注開發者工具與自動化：把重複、易錯的配置工作，變成任何人都能執行和推理的清晰流程。",
+        about3: '我橫跨 <strong>AI、軟件與開源</strong>，喜歡三者交界處的專案——細小鋒利、令工作流消失的工具。',
+        about4: "我交付的一切都有文件、有測試、可重現。如果它不能被理解，也就無法被很好地自動化。",
+        hContact: "聯絡", contactTitle: "一起做點有用的東西。",
+        contactText: "歡迎合作、回饋與開源協作。",
+        btnEmailMe: "電郵我", footerEmail: "電郵"
+      }
+    };
+
+    function applyLang(lang) {
+      var dict = I18N[lang] || I18N.en;
+      document.documentElement.lang = lang;
+      document.title = dict.title;
+      document.querySelectorAll("[data-i18n]").forEach(function (el) {
+        var key = el.getAttribute("data-i18n");
+        if (dict[key] !== undefined) el.textContent = dict[key];
+      });
+      document.querySelectorAll("[data-i18n-html]").forEach(function (el) {
+        var key = el.getAttribute("data-i18n-html");
+        if (dict[key] !== undefined) el.innerHTML = dict[key];
+      });
+      document.querySelectorAll(".lang button").forEach(function (btn) {
+        btn.classList.toggle("active", btn.getAttribute("data-lang") === lang);
+      });
+      localStorage.setItem("lang", lang);
+    }
+
+    function pickLang() {
+      var saved = localStorage.getItem("lang");
+      if (saved && I18N[saved]) return saved;
+      var nav = (navigator.language || "en").toLowerCase();
+      if (nav.indexOf("zh") === 0) {
+        return /hant|hk|tw|mo|yue/.test(nav) ? "zh-HK" : "zh-Hans";
+      }
+      return "en";
+    }
+
     (function () {
       var root = document.documentElement;
-      var saved = localStorage.getItem("theme");
-      if (saved) root.setAttribute("data-theme", saved);
+      var savedTheme = localStorage.getItem("theme");
+      if (savedTheme) root.setAttribute("data-theme", savedTheme);
       document.getElementById("theme").addEventListener("click", function () {
         var next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
         root.setAttribute("data-theme", next);
         localStorage.setItem("theme", next);
       });
+      document.querySelectorAll(".lang button").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          applyLang(btn.getAttribute("data-lang"));
+        });
+      });
       document.getElementById("year").textContent = new Date().getFullYear();
+      applyLang(pickLang());
     })();
   </script>
 </body>
