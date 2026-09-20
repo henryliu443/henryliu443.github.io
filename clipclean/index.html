@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Clipclean — macOS Plain Text Utility</title>
-  <meta name="description" content="A tiny macOS menu bar utility that strips rich text from the clipboard.">
+  <title>Clipclean — Plain Text Clipboard Utility</title>
+  <meta name="description" content="A tiny native macOS and Windows utility that strips rich text from the clipboard.">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📋</text></svg>">
   <style>
     :root {
@@ -76,8 +76,8 @@
     @media (max-width: 620px) { .features { grid-template-columns: 1fr; } }
     .chips { display: flex; flex-wrap: wrap; gap: .5rem; }
     .chip { font-size: .85rem; color: var(--muted); border: 1px solid var(--line); background: var(--card); border-radius: 999px; padding: .35rem .85rem; }
-    .shots { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem; align-items: start; }
-    @media (max-width: 620px) { .shots { grid-template-columns: 1fr; } }
+    .shots { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.1rem; align-items: start; }
+    @media (max-width: 720px) { .shots { grid-template-columns: 1fr; } }
     .shots img { width: 100%; height: auto; border: 1px solid var(--line); border-radius: 14px; background: var(--card); box-shadow: var(--shadow); }
 
     footer {
@@ -112,13 +112,13 @@
 
   <div class="wrap">
     <header>
-      <p class="eyebrow" data-i18n="eyebrow">macOS Utility · Open Source</p>
+      <p class="eyebrow" data-i18n="eyebrow">macOS &amp; Windows · Open Source</p>
       <h1>Clipclean</h1>
       <p class="lead" data-i18n="lead">
-        A tiny macOS menu bar utility that strips rich text from the clipboard.
+        A tiny native macOS and Windows utility that strips rich text from the clipboard, so every paste is plain text.
       </p>
       <div class="cta">
-        <a class="btn primary" href="https://github.com/henryliu443/clipclean/releases/latest" data-i18n="btnDownload">Download for macOS</a>
+        <a class="btn primary" href="https://github.com/henryliu443/clipclean/releases/latest" data-i18n="btnDownload">Download</a>
         <a class="btn" href="https://github.com/henryliu443/clipclean#readme" data-i18n="btnReadme">GitHub README</a>
         <a class="btn" href="https://github.com/henryliu443/clipclean" data-i18n="btnSource">Source on GitHub</a>
       </div>
@@ -130,7 +130,9 @@
         <p data-i18n="about">
           When Plain Text Mode is on, every copy is reduced to its plain-text representation:
           fonts, colors and other rich flavours are dropped, while Unicode, emoji, tabs and line
-          breaks are preserved. When it is off, the clipboard behaves exactly as macOS normally does.
+          breaks are preserved. When it is off, the clipboard behaves exactly as the system normally
+          does. Both builds live in the menu bar or system tray only — no Dock icon, no taskbar
+          window, no installer.
         </p>
       </div>
     </section>
@@ -140,28 +142,29 @@
       <div class="shots">
         <img src="screenshots/01-main.png" alt="Clipclean main panel" loading="lazy">
         <img src="screenshots/02-settings.png" alt="Clipclean settings" loading="lazy">
+        <img src="screenshots/03-menu.png" alt="Clipclean right-click menu" loading="lazy">
       </div>
     </section>
 
     <section>
       <h2 data-i18n="hFeatures">Highlights</h2>
       <ul class="features">
-        <li data-i18n="f1">Menu bar only — no Dock icon, no main window</li>
-        <li data-i18n="f2">Liquid Glass panel with a large slide switch</li>
+        <li data-i18n="f1">Menu bar on macOS, system tray on Windows — no Dock icon, no taskbar window</li>
+        <li data-i18n="f2">Left-click panel with a large slide switch; right-click menu for On / Off, Settings and Quit</li>
         <li data-i18n="f3">Global hot keys: F6 on, F5 off</li>
-        <li data-i18n="f4">Launch at Login</li>
+        <li data-i18n="f4">Launch at Login on macOS, Start with Windows on Windows</li>
         <li data-i18n="f5">English / 中文 switch inside Settings</li>
-        <li data-i18n="f6">No network access, no permissions, no history</li>
+        <li data-i18n="f6">No network access, no clipboard history</li>
       </ul>
     </section>
 
     <section>
       <h2 data-i18n="hStack">Stack</h2>
       <div class="chips">
-        <span class="chip">Swift</span>
-        <span class="chip">macOS 14+</span>
         <span class="chip">SwiftUI · AppKit</span>
-        <span class="chip">Carbon Hot Keys</span>
+        <span class="chip">macOS 14+</span>
+        <span class="chip">Win32 · C++17</span>
+        <span class="chip">Windows 7 SP1+</span>
         <span class="chip">Apache-2.0</span>
       </div>
     </section>
@@ -178,54 +181,54 @@
   <script>
     var I18N = {
       "en": {
-        title: "Clipclean — macOS Plain Text Utility",
+        title: "Clipclean — Plain Text Clipboard Utility",
         navHome: "Home", navProjects: "Projects",
-        eyebrow: "macOS Utility · Open Source",
-        lead: "A tiny macOS menu bar utility that strips rich text from the clipboard.",
-        btnDownload: "Download for macOS", btnReadme: "GitHub README", btnSource: "Source on GitHub",
+        eyebrow: "macOS & Windows · Open Source",
+        lead: "A tiny native macOS and Windows utility that strips rich text from the clipboard, so every paste is plain text.",
+        btnDownload: "Download", btnReadme: "GitHub README", btnSource: "Source on GitHub",
         hAbout: "About", hScreens: "Screenshots",
-        about: "When Plain Text Mode is on, every copy is reduced to its plain-text representation: fonts, colors and other rich flavours are dropped, while Unicode, emoji, tabs and line breaks are preserved. When it is off, the clipboard behaves exactly as macOS normally does.",
+        about: "When Plain Text Mode is on, every copy is reduced to its plain-text representation: fonts, colors and other rich flavours are dropped, while Unicode, emoji, tabs and line breaks are preserved. When it is off, the clipboard behaves exactly as the system normally does. Both builds live in the menu bar or system tray only — no Dock icon, no taskbar window, no installer.",
         hFeatures: "Highlights",
-        f1: "Menu bar only — no Dock icon, no main window",
-        f2: "Liquid Glass panel with a large slide switch",
+        f1: "Menu bar on macOS, system tray on Windows — no Dock icon, no taskbar window",
+        f2: "Left-click panel with a large slide switch; right-click menu for On / Off, Settings and Quit",
         f3: "Global hot keys: F6 on, F5 off",
-        f4: "Launch at Login",
+        f4: "Launch at Login on macOS, Start with Windows on Windows",
         f5: "English / 中文 switch inside Settings",
-        f6: "No network access, no permissions, no history",
+        f6: "No network access, no clipboard history",
         hStack: "Stack"
       },
       "zh-Hans": {
-        title: "Clipclean — macOS 纯文本工具",
+        title: "Clipclean — 纯文本剪贴板工具",
         navHome: "首页", navProjects: "项目",
-        eyebrow: "macOS 工具 · 开源",
-        lead: "一个极简的 macOS 菜单栏工具，把 Clipboard 里的 Rich text 剥离成 Plain text。",
-        btnDownload: "下载 macOS 版", btnReadme: "GitHub README", btnSource: "GitHub 源码",
+        eyebrow: "macOS 与 Windows · 开源",
+        lead: "一个原生支持 macOS 与 Windows 的极小剪贴板工具，把 Clipboard 里的 Rich text 剥离成 Plain text，粘贴出来永远是 Plain text。",
+        btnDownload: "下载", btnReadme: "GitHub README", btnSource: "GitHub 源码",
         hAbout: "简介", hScreens: "截图",
-        about: "打开 Plain text 模式后，每次 Copy 都会被还原为 Plain text：字体、颜色等 Rich text 格式被丢弃，而 Unicode、Emoji、制表符与 Return 都会保留。关闭后，Clipboard 行为与 macOS 原生完全一致。",
+        about: "打开 Plain text 模式后，每次 Copy 都会被还原为 Plain text：字体、颜色等 Rich text 格式被丢弃，而 Unicode、Emoji、制表符与 Return 都会保留。关闭后，Clipboard 行为与系统原生完全一致。两个平台都只驻留在 Menu Bar / 系统托盘：没有 Dock 图标、没有任务栏窗口、没有安装程序。",
         hFeatures: "亮点",
-        f1: "Menu Bar Only",
-        f2: "Liquid glass 面板，配一个大号滑动开关",
+        f1: "macOS Menu Bar / Windows 系统托盘 —— 没有 Dock 图标、没有任务栏窗口",
+        f2: "左键打开带大滑块的面板；右键菜单可开 / 关模式、进入设置、退出",
         f3: "Hotkey：F6 开启，F5 关闭",
-        f4: "开机自动启动",
+        f4: "macOS 开机自动启动 / Windows 随系统启动",
         f5: "语言: English / 中文 (Language: English / Chinese)",
-        f6: "No internet access、No permissions required、No history recorded",
+        f6: "No internet access、No clipboard history",
         hStack: "技术栈"
       },
       "yue": {
-        title: "Clipclean — macOS 純文字架生",
+        title: "Clipclean — 純文字剪貼板架生",
         navHome: "首頁", navProjects: "專案",
-        eyebrow: "macOS 架生 · 開源",
-        lead: "一個細細粒嘅 macOS 選單列架生，將 Clipboard 入面嘅 Rich text 變做 Plain text。",
-        btnDownload: "下載 macOS 版", btnReadme: "GitHub README", btnSource: "GitHub 原始碼",
+        eyebrow: "macOS 同 Windows · 開源",
+        lead: "一個原生支援 macOS 同 Windows 嘅細細粒剪貼板架生，將 Clipboard 入面嘅 Rich text 剝走，Paste 出嚟永遠係 Plain text。",
+        btnDownload: "下載", btnReadme: "GitHub README", btnSource: "GitHub 原始碼",
         hAbout: "簡介", hScreens: "截圖",
-        about: "開咗 Plain text 模式之後，每次 Copy 都會還原做 Plain text：字體、顏色等 Rich text 格式會掉走，但 Unicode、Emoji、Tab 同 Return 都會保留。熄咗之後，Clipboard 嘅行為同 macOS 原生一模一樣。",
+        about: "開咗 Plain text 模式之後，每次 Copy 都會還原做 Plain text：字體、顏色等 Rich text 格式會掉走，但 Unicode、Emoji、Tab 同 Return 都會保留。熄咗之後，Clipboard 嘅行為同系統原生一模一樣。兩個平台都只係駐喺 Menu Bar / 系統托盤：冇 Dock 圖示、冇工作列窗口、冇安裝程式。",
         hFeatures: "亮點",
-        f1: "Menu Bar Only",
-        f2: "Liquid glass 面板，配一個大掣",
+        f1: "macOS Menu Bar / Windows 系統托盤 —— 冇 Dock 圖示、冇工作列窗口",
+        f2: "左鍵打開有大大個滑塊嘅面板；右鍵選單可以開 / 熄模式、入設定、退出",
         f3: "Hotkey：F6 開，F5 熄",
-        f4: "開機自動啟動",
+        f4: "macOS 開機自動啟動 / Windows 跟系統啟動",
         f5: "語言: English / 中文 (Language: English / Chinese)",
-        f6: "No internet access、No permissions required、No history recorded",
+        f6: "No internet access、No clipboard history",
         hStack: "技術棧"
       }
     };
