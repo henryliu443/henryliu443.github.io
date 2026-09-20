@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Henry Liu — AI · Software · Open Source</title>
-  <meta name="description" content="Henry Liu builds tools, experiments with systems, and turns messy technical workflows into something that can be understood and automated.">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚙️</text></svg>">
+  <title>Henry Liu — Developer Tools & Systems</title>
+  <meta name="description" content="Henry Liu builds small, practical tools for everyday developer and system workflows.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
   <style>
     :root {
       --bg: #fbfbfd;
@@ -92,7 +92,7 @@
     }
     .eyebrow { font-size: .82rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
     h1 { margin-top: 1rem; font-size: clamp(2.6rem, 8vw, 4.4rem); line-height: 1.02; letter-spacing: -0.035em; font-weight: 800; }
-    .lead { margin-top: 1.5rem; max-width: 40rem; font-size: clamp(1.05rem, 2.4vw, 1.3rem); color: var(--muted); }
+    .lead { margin-top: 1.5rem; max-width: 42rem; font-size: clamp(1.1rem, 2.4vw, 1.35rem); color: var(--fg); font-weight: 500; }
     .cta { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 2rem; }
     .btn {
       display: inline-flex; align-items: center; gap: .45rem;
@@ -115,7 +115,7 @@
       border: 1px solid var(--line); border-radius: 14px; overflow: hidden; margin-top: 3.5rem;
     }
     .metric { background: var(--card); padding: 1.1rem 1.25rem; }
-    .metric b { display: block; font-size: 1.35rem; letter-spacing: -0.02em; }
+    .metric b { display: block; font-size: 1.2rem; letter-spacing: -0.02em; }
     .metric span { font-size: .8rem; color: var(--muted); }
     @media (max-width: 620px) { .metrics { grid-template-columns: repeat(2, 1fr); } }
 
@@ -171,8 +171,8 @@
       <div class="nav-right">
         <div class="nav-links">
           <a href="#projects" data-i18n="navProjects">Projects</a>
-          <a href="#toolbox" data-i18n="navToolbox">Toolbox</a>
-          <a href="#about" data-i18n="navAbout">About</a>
+          <a href="#toolbox" data-i18n="navToolbox">Tools & Projects</a>
+          <a href="#about" data-i18n="navAbout">What I Work On</a>
           <a href="https://github.com/henryliu443">GitHub</a>
         </div>
         <div class="lang" role="group" aria-label="Language">
@@ -187,97 +187,104 @@
 
   <div class="wrap" id="top">
     <header>
-      <p class="eyebrow" data-i18n="eyebrow">AI · Software · Open Source</p>
+      <p class="eyebrow" data-i18n="eyebrow">Developer Tools · Systems · Open Source</p>
       <h1>Henry Liu</h1>
-      <p class="lead" data-i18n-html="lead">
-        I build tools, experiment with systems, and turn messy technical
-        workflows into something that can be <span class="accent-text">understood
-        and automated</span>.
+      <p class="lead" data-i18n="lead">
+        I build small tools for everyday developer and system workflows.
       </p>
       <div class="cta">
-        <a class="btn primary" href="https://henryliu443.github.io/DevConfig-Gen/" data-i18n="ctaDocs">Explore DevConfig-Gen →</a>
-        <a class="btn" href="https://github.com/henryliu443">GitHub</a>
-        <a class="btn" href="mailto:henryliu443@gmail.com" data-i18n="ctaEmail">Email</a>
+        <a class="btn primary" href="https://henryliu443.github.io/DevConfig-Gen/" data-i18n="ctaDocs">View DevConfig-Gen →</a>
+        <a class="btn" href="https://github.com/henryliu443">GitHub Profile</a>
+        <a class="btn" href="mailto:henryliu443@gmail.com" data-i18n="ctaEmail">Get in Touch</a>
       </div>
 
       <div class="metrics">
-        <div class="metric"><b>3</b><span data-i18n="metricProviders">built-in providers</span></div>
-        <div class="metric"><b>135</b><span data-i18n="metricTests">tests passing</span></div>
-        <div class="metric"><b>0</b><span data-i18n="metricDeps">runtime dependencies</span></div>
-        <div class="metric"><b>1.0.0</b><span data-i18n="metricVersion">current release</span></div>
+        <div class="metric"><b data-i18n="m1Title">0 Runtime Deps</b><span data-i18n="m1Sub">Lightweight architecture</span></div>
+        <div class="metric"><b data-i18n="m2Title">Deterministic</b><span data-i18n="m2Sub">Path-aware validation</span></div>
+        <div class="metric"><b data-i18n="m3Title">Developer First</b><span data-i18n="m3Sub">CLI, Web & SDK ready</span></div>
+        <div class="metric"><b data-i18n="m4Title">Open Source</b><span data-i18n="m4Sub">Apache 2.0 Licensed</span></div>
       </div>
     </header>
 
     <section id="projects">
-      <h2 data-i18n="hProjects">Projects</h2>
+      <h2 data-i18n="hProjects">Featured Project</h2>
       <article class="project">
         <div class="project-top">
           <h3>DevConfig-Gen</h3>
-          <span class="badge" data-i18n="badgeOpen">Open Source</span>
+          <span class="badge" data-i18n="badgeOpen">Open Source Engine</span>
         </div>
         <p class="desc" data-i18n="projectDesc">
-          A local, provider-based engine for generating and validating structured
-          configuration. It merges multiple JSON/YAML inputs, applies overrides,
-          validates every field, and produces deterministic JSON, YAML, or
-          .env artifacts — with no network or system side effects.
+          A lightweight, provider-based configuration engine designed to aggregate multi-source JSON/YAML configurations, run field-level validations, and produce deterministic environment targets with zero runtime overhead.
         </p>
         <ul class="features">
-          <li data-i18n="f1">Provider-based generation pipeline</li>
-          <li data-i18n-html="f2">Multi-source deep merge &amp; <code>--set</code> overrides</li>
-          <li data-i18n="f3">Precise, path-aware validation diagnostics</li>
-          <li data-i18n="f4">CLI, terminal wizard, and local Web studio</li>
-          <li data-i18n-html="f5">Deterministic JSON / YAML / <code>.env</code> output</li>
-          <li data-i18n="f6">Zero runtime dependencies</li>
+          <li data-i18n="f1">Modular provider pipeline architecture</li>
+          <li data-i18n-html="f2">Deep merging with path-specific <code>--set</code> overrides</li>
+          <li data-i18n="f3">Strict schema validation &amp; path-level diagnostics</li>
+          <li data-i18n="f4">Unified CLI, interactive wizard, and Web Studio UI</li>
+          <li data-i18n-html="f5">Multi-target exports (JSON, YAML, <code>.env</code>)</li>
+          <li data-i18n="f6">Zero external runtime dependencies</li>
         </ul>
         <div class="links">
-          <a class="btn primary" href="https://henryliu443.github.io/DevConfig-Gen/" data-i18n="btnDocs">Documentation</a>
-          <a class="btn" href="https://github.com/henryliu443/DevConfig-Gen" data-i18n="btnSource">Source</a>
-          <a class="btn" href="https://github.com/henryliu443/DevConfig-Gen/blob/main/ARCHITECTURE.md" data-i18n="btnArch">Architecture</a>
+          <a class="btn primary" href="https://henryliu443.github.io/DevConfig-Gen/docs/" data-i18n="btnDocs">Documentation</a>
+          <a class="btn" href="https://github.com/henryliu443/DevConfig-Gen" data-i18n="btnSource">GitHub Repository</a>
+          <a class="btn" href="https://github.com/henryliu443/DevConfig-Gen/blob/main/ARCHITECTURE.md" data-i18n="btnArch">Architecture Spec</a>
         </div>
       </article>
+
+      <h2 data-i18n="hMore" style="margin-top:3.5rem;">More Projects</h2>
+      <div class="grid-2">
+        <article class="project">
+          <div class="project-top">
+            <h3>Clipclean</h3>
+            <span class="badge" data-i18n="badgeMac">macOS</span>
+          </div>
+          <p class="desc" data-i18n="clipDesc">
+            A tiny macOS menu bar utility that strips rich text from the clipboard.
+          </p>
+          <div class="links">
+            <a class="btn" href="/clipclean/" data-i18n="btnView">View →</a>
+            <a class="btn" href="https://github.com/henryliu443/clipclean" data-i18n="btnSourceShort">Source</a>
+          </div>
+        </article>
+        <article class="project">
+          <div class="project-top">
+            <h3>Lens</h3>
+            <span class="badge" data-i18n="badgeIOS">iOS</span>
+          </div>
+          <p class="desc" data-i18n="lensDesc">
+            One input, multiple perspectives — structured analysis for iOS.
+          </p>
+          <div class="links">
+            <a class="btn" href="/Lens/" data-i18n="btnView">View →</a>
+            <a class="btn" href="https://github.com/henryliu443/Lens" data-i18n="btnSourceShort">Source</a>
+          </div>
+        </article>
+      </div>
     </section>
 
     <section id="toolbox">
-      <h2 data-i18n="hToolbox">Toolbox</h2>
+      <h2 data-i18n="hToolbox">Tools & Projects</h2>
       <div class="chips">
         <span class="chip">Python</span>
-        <span class="chip" data-i18n="chipCli">CLI / Automation</span>
-        <span class="chip">JSON / YAML</span>
-        <span class="chip" data-i18n="chipTooling">Developer Tooling</span>
-        <span class="chip">AI</span>
-        <span class="chip" data-i18n="chipOss">Open Source</span>
+        <span class="chip" data-i18n="chipCli">CLI & Workflow Automation</span>
+        <span class="chip">Data Pipelines & Configuration</span>
+        <span class="chip" data-i18n="chipTooling">Developer Tools</span>
+        <span class="chip">System Utilities</span>
+        <span class="chip" data-i18n="chipOss">Open Source Software</span>
         <span class="chip">GitHub Actions</span>
-        <span class="chip">MkDocs</span>
-        <span class="chip" data-i18n="chipWriting">Technical Writing</span>
+        <span class="chip" data-i18n="chipWriting">Technical Documentation</span>
       </div>
     </section>
 
     <section id="about">
-      <h2 data-i18n="hAbout">About</h2>
-      <div class="grid-2">
-        <div class="prose">
-          <p data-i18n-html="about1">
-            I care about tools that are <strong>local, deterministic, and easy
-            to automate</strong> — software you can read, test, and trust without
-            a hidden control plane.
-          </p>
-          <p data-i18n="about2">
-            My focus is on developer tooling and automation: taking repetitive,
-            error-prone configuration work and turning it into a clear pipeline
-            that anyone can run and reason about.
-          </p>
-        </div>
-        <div class="prose">
-          <p data-i18n-html="about3">
-            I work across <strong>AI, software, and open source</strong>, and I
-            like projects that sit at the intersection of the three — small,
-            sharp tools that make a workflow disappear.
-          </p>
-          <p data-i18n="about4">
-            Everything I ship is documented, tested, and reproducible. If it
-            can't be understood, it can't be automated well.
-          </p>
-        </div>
+      <h2 data-i18n="hAbout">What I Work On</h2>
+      <div class="prose" style="max-width: 44rem;">
+        <p data-i18n="about1">
+          I focus on developer tooling, system automation, and configuration management. I enjoy taking repetitive, error-prone setup tasks and turning them into clean, reliable pipelines that are straightforward to test and maintain.
+        </p>
+        <p data-i18n="about2" style="margin-top: 1.25rem;">
+          I build practical tools for everyday developer workflows — focusing on zero runtime overhead and predictable behavior. I value readable code, good test coverage, and clear documentation that helps people solve problems quickly.
+        </p>
       </div>
     </section>
 
@@ -285,11 +292,11 @@
       <h2 data-i18n="hContact">Contact</h2>
       <div class="contact">
         <div>
-          <h3 data-i18n="contactTitle">Let's build something useful.</h3>
-          <p data-i18n="contactText">Open to collaboration, feedback, and open-source work.</p>
+          <h3 data-i18n="contactTitle">Get in touch.</h3>
+          <p data-i18n="contactText">Have a question, an idea, or something worth building? Send me an email.</p>
         </div>
         <div class="links" style="margin-top:0">
-          <a class="btn primary" href="mailto:henryliu443@gmail.com" data-i18n="btnEmailMe">Email me</a>
+          <a class="btn primary" href="mailto:henryliu443@gmail.com" data-i18n="btnEmailMe">Send an Email</a>
           <a class="btn" href="https://github.com/henryliu443">GitHub</a>
         </div>
       </div>
@@ -307,91 +314,103 @@
   <script>
     var I18N = {
       "en": {
-        title: "Henry Liu — AI · Software · Open Source",
-        navProjects: "Projects", navToolbox: "Toolbox", navAbout: "About",
-        eyebrow: "AI · Software · Open Source",
-        lead: 'I build tools, experiment with systems, and turn messy technical workflows into something that can be <span class="accent-text">understood and automated</span>.',
-        ctaDocs: "Explore DevConfig-Gen →", ctaEmail: "Email",
-        metricProviders: "built-in providers", metricTests: "tests passing",
-        metricDeps: "runtime dependencies", metricVersion: "current release",
-        hProjects: "Projects", badgeOpen: "Open Source",
-        projectDesc: "A local, provider-based engine for generating and validating structured configuration. It merges multiple JSON/YAML inputs, applies overrides, validates every field, and produces deterministic JSON, YAML, or .env artifacts — with no network or system side effects.",
-        f1: "Provider-based generation pipeline",
-        f2: 'Multi-source deep merge &amp; <code>--set</code> overrides',
-        f3: "Precise, path-aware validation diagnostics",
-        f4: "CLI, terminal wizard, and local Web studio",
-        f5: 'Deterministic JSON / YAML / <code>.env</code> output',
-        f6: "Zero runtime dependencies",
-        btnDocs: "Documentation", btnSource: "Source", btnArch: "Architecture",
-        hToolbox: "Toolbox",
-        chipCli: "CLI / Automation", chipTooling: "Developer Tooling",
-        chipOss: "Open Source", chipWriting: "Technical Writing",
-        hAbout: "About",
-        about1: 'I care about tools that are <strong>local, deterministic, and easy to automate</strong> — software you can read, test, and trust without a hidden control plane.',
-        about2: "My focus is on developer tooling and automation: taking repetitive, error-prone configuration work and turning it into a clear pipeline that anyone can run and reason about.",
-        about3: 'I work across <strong>AI, software, and open source</strong>, and I like projects that sit at the intersection of the three — small, sharp tools that make a workflow disappear.',
-        about4: "Everything I ship is documented, tested, and reproducible. If it can't be understood, it can't be automated well.",
-        hContact: "Contact", contactTitle: "Let's build something useful.",
-        contactText: "Open to collaboration, feedback, and open-source work.",
-        btnEmailMe: "Email me", footerEmail: "Email"
+        title: "Henry Liu — Developer Tools & Systems",
+        navProjects: "Projects", navToolbox: "Tools & Projects", navAbout: "What I Work On",
+        eyebrow: "Developer Tools · Systems · Open Source",
+        lead: 'I build small tools for everyday developer and system workflows.',
+        ctaDocs: "View DevConfig-Gen →", ctaEmail: "Get in Touch",
+        m1Title: "0 Runtime Deps", m1Sub: "Lightweight architecture",
+        m2Title: "Deterministic", m2Sub: "Path-aware validation",
+        m3Title: "Developer First", m3Sub: "CLI, Web & SDK ready",
+        m4Title: "Open Source", m4Sub: "Apache 2.0 Licensed",
+        hProjects: "Featured Project", badgeOpen: "Open Source Engine",
+        projectDesc: "A lightweight, provider-based configuration engine designed to aggregate multi-source JSON/YAML configurations, run field-level validations, and produce deterministic environment targets with zero runtime overhead.",
+        f1: "Modular provider pipeline architecture",
+        f2: 'Deep merging with path-specific <code>--set</code> overrides',
+        f3: "Strict schema validation &amp; path-level diagnostics",
+        f4: "Unified CLI, interactive wizard, and Web Studio UI",
+        f5: 'Multi-target exports (JSON, YAML, <code>.env</code>)',
+        f6: "Zero external runtime dependencies",
+        btnDocs: "Documentation", btnSource: "GitHub Repository", btnArch: "Architecture Spec",
+        hMore: "More Projects", badgeMac: "macOS", badgeIOS: "iOS",
+        clipDesc: "A tiny macOS menu bar utility that strips rich text from the clipboard.",
+        lensDesc: "One input, multiple perspectives — structured analysis for iOS.",
+        btnView: "View →", btnSourceShort: "Source",
+        hToolbox: "Tools & Projects",
+        chipCli: "CLI & Workflow Automation", chipTooling: "Developer Tools",
+        chipOss: "Open Source Software", chipWriting: "Technical Documentation",
+        hAbout: "What I Work On",
+        about1: "I focus on developer tooling, system automation, and configuration management. I enjoy taking repetitive, error-prone setup tasks and turning them into clean, reliable pipelines that are straightforward to test and maintain.",
+        about2: "I build practical tools for everyday developer workflows — focusing on zero runtime overhead and predictable behavior. I value readable code, good test coverage, and clear documentation that helps people solve problems quickly.",
+        hContact: "Contact", contactTitle: "Get in touch.",
+        contactText: "Have a question, an idea, or something worth building? Send me an email.",
+        btnEmailMe: "Send an Email", footerEmail: "Email"
       },
       "zh-Hans": {
-        title: "Henry Liu — AI · 软件 · 开源",
-        navProjects: "项目", navToolbox: "工具箱", navAbout: "关于",
-        eyebrow: "AI · 软件 · 开源",
-        lead: '我构建工具、折腾系统，把杂乱的技术流程变成<span class="accent-text">可被理解、可被自动化</span>的东西。',
-        ctaDocs: "浏览 DevConfig-Gen →", ctaEmail: "邮箱",
-        metricProviders: "内置 Provider", metricTests: "测试通过",
-        metricDeps: "运行时依赖", metricVersion: "当前版本",
-        hProjects: "项目", badgeOpen: "开源",
-        projectDesc: "一个本地运行、以 Provider 为核心的结构化配置生成与校验引擎。它合并多个 JSON/YAML 输入、应用覆盖、逐字段校验，并输出确定性的 JSON、YAML 或 .env 产物——不访问网络、不修改系统。",
-        f1: "Provider 驱动的生成流水线",
-        f2: '多源深度合并与 <code>--set</code> 覆盖',
-        f3: "精确到字段路径的校验诊断",
-        f4: "CLI、终端向导与本地 Web 工作台",
-        f5: '确定性的 JSON / YAML / <code>.env</code> 输出',
-        f6: "零运行时依赖",
-        btnDocs: "文档", btnSource: "源码", btnArch: "架构",
-        hToolbox: "工具箱",
-        chipCli: "CLI / 自动化", chipTooling: "开发者工具",
-        chipOss: "开源", chipWriting: "技术写作",
-        hAbout: "关于",
-        about1: '我在意那些<strong>本地、确定、易于自动化</strong>的工具——可以阅读、测试、信任，而没有一个隐藏的控制面。',
-        about2: "我关注开发者工具与自动化：把重复、易错的配置工作，变成任何人都能运行和推理的清晰流水线。",
-        about3: '我横跨 <strong>AI、软件与开源</strong>，喜欢三者交界处的项目——小而锋利、让工作流消失的工具。',
-        about4: "我交付的一切都有文档、有测试、可复现。如果它不能被理解，也就无法被很好地自动化。",
-        hContact: "联系", contactTitle: "一起做点有用的东西。",
-        contactText: "欢迎合作、反馈与开源协作。",
-        btnEmailMe: "给我发邮件", footerEmail: "邮箱"
+        title: "Henry Liu — 开发者工具与系统",
+        navProjects: "精选项目", navToolbox: "工具与方向", navAbout: "我所关注的",
+        eyebrow: "开发者工具 · 系统自动化 · 开源工程",
+        lead: '我构建小巧实用的工具，用以简化日常开发者与系统的自动化工作流。',
+        ctaDocs: "了解 DevConfig-Gen →", ctaEmail: "联系我",
+        m1Title: "零运行时依赖", m1Sub: "轻量高效的工程设计",
+        m2Title: "确定性校验", m2Sub: "精确到字段路径的诊断",
+        m3Title: "开发者优先", m3Sub: "涵盖 CLI、Web 与 SDK",
+        m4Title: "开源共享", m4Sub: "基于 Apache 2.0 协议",
+        hProjects: "精选项目", badgeOpen: "开源引擎",
+        projectDesc: "一个轻量级、基于 Provider 架构的配置生成与校验引擎。它能将多源 JSON/YAML 动态合并，运行字段级类型校验，并零额外依赖地输出确定性的配置文件。",
+        f1: "模块化 Provider 流水线架构",
+        f2: '多源深度合并与指定路径 <code>--set</code> 覆盖',
+        f3: "严格的 Schema 校验与路径级故障定位",
+        f4: "集成 CLI、终端交互向导与 Web 工作台",
+        f5: '支持 JSON、YAML 及 <code>.env</code> 多格式导出',
+        f6: "零第三方运行时依赖",
+        btnDocs: "项目文档", btnSource: "GitHub 仓库", btnArch: "架构设计说明",
+        hMore: "更多项目", badgeMac: "macOS", badgeIOS: "iOS",
+        clipDesc: "一个极简的 macOS 菜单栏工具，把剪贴板里的富文本剥离成纯文本。",
+        lensDesc: "同一段输入，换多个角度看——iOS 上的结构化多视角分析。",
+        btnView: "查看 →", btnSourceShort: "源码",
+        hToolbox: "工具与方向",
+        chipCli: "CLI 与工作流自动化", chipTooling: "开发者工具",
+        chipOss: "开源软件开发", chipWriting: "技术文档与规范",
+        hAbout: "我所关注的",
+        about1: "我专注于开发者工具、系统自动化与配置管理。我喜欢将日常开发中繁琐、易错的重复性任务，整理为清晰、可靠且便于测试维护的自动化流程。",
+        about2: "我为日常开发与系统工作流构建小巧实用的工具，注重零运行时开销与稳定可预测的表现。我重视代码可读性、完备的测试覆盖以及简明有用的文档。",
+        hContact: "联系沟通", contactTitle: "保持联系。",
+        contactText: "有想法、疑问，或是想做点有趣的东西？欢迎给我发邮件。",
+        btnEmailMe: "发送邮件", footerEmail: "邮箱"
       },
       "yue": {
-        title: "Henry Liu — AI · 軟件 · 開源",
-        navProjects: "專案", navToolbox: "架生", navAbout: "關於",
-        eyebrow: "AI · 軟件 · 開源",
-        lead: '我整工具、鑽研系統，將啲亂七八糟嘅技術流程，變到<span class="accent-text">睇得明、自動得到</span>嘅嘢。',
-        ctaDocs: "睇下 DevConfig-Gen →", ctaEmail: "電郵",
-        metricProviders: "內建 Provider", metricTests: "測試過關",
-        metricDeps: "執行時依賴", metricVersion: "而家版本",
-        hProjects: "專案", badgeOpen: "開源",
-        projectDesc: "一個喺本地行、以 Provider 為核心嘅結構化配置生成同驗證引擎。佢會合併多個 JSON/YAML 輸入、套用覆寫、逐個欄位驗證，再輸出穩定嘅 JSON、YAML 或者 .env 產物——唔連網、唔郁你部機。",
-        f1: "Provider 帶住嘅生成流程",
-        f2: '多來源深度合併同 <code>--set</code> 覆寫',
-        f3: "準到欄位路徑嘅驗證診斷",
-        f4: "CLI、終端精靈同本地 Web 工作台",
-        f5: '穩定嘅 JSON / YAML / <code>.env</code> 輸出',
-        f6: "零執行時依賴",
-        btnDocs: "文件", btnSource: "原始碼", btnArch: "架構",
-        hToolbox: "架生",
-        chipCli: "CLI / 自動化", chipTooling: "開發者架生",
-        chipOss: "開源", chipWriting: "技術寫作",
-        hAbout: "關於",
-        about1: '我鍾意啲<strong>本地、穩定、易自動化</strong>嘅工具——睇得到、測得到、信得過，冇隱藏嘅控制台。',
-        about2: "我專攻開發者工具同自動化：將啲重複又易錯嘅配置工作，變成人人都行得順、睇得明嘅清晰流程。",
-        about3: '我橫跨 <strong>AI、軟件同開源</strong>，最鍾意企喺三者交界嘅專案——細細粒但好利，令成個工作流消失嘅工具。',
-        about4: "我出嘅嘢都有文件、有測試、可重現。睇唔明嘅話，就自動化唔到。",
-        hContact: "聯絡", contactTitle: "一齊整啲有用嘅嘢。",
-        contactText: "歡迎合作、畀下意見、一齊搞開源。",
-        btnEmailMe: "電郵我", footerEmail: "電郵"
+        title: "Henry Liu — 開發者架生同系統",
+        navProjects: "精選專案", navToolbox: "工具同方向", navAbout: "我做緊嘅嘢",
+        eyebrow: "開發者架生 · 系統自動化 · 開源工程",
+        lead: '我整啲細巧實用嘅工具，用嚟搞定日常開發者同系統嘅工作流。',
+        ctaDocs: "睇下 DevConfig-Gen →", ctaEmail: "聯絡我",
+        m1Title: "零執行時依賴", m1Sub: "輕巧高效嘅工程設計",
+        m2Title: "穩定驗證", m2Sub: "準到欄位路徑嘅診斷",
+        m3Title: "開發者優先", m3Sub: "支援 CLI、Web 同 SDK",
+        m4Title: "開源共享", m4Sub: "採用 Apache 2.0 協議",
+        hProjects: "精選專案", badgeOpen: "開源引擎",
+        projectDesc: "一個輕量、以 Provider 爲核心嘅配置生成同驗證引擎。佢可以合併多個 JSON/YAML 輸入、套用欄位覆寫、做精準驗證，並輸出穩定嘅配置檔案。",
+        f1: "模組化 Provider 流水線架構",
+        f2: '多來源深度合併同指定路徑 <code>--set</code> 覆寫',
+        f3: "嚴格嘅 Schema 驗證同路徑級診斷",
+        f4: "整合 CLI、互動式向導同 Web 工作台",
+        f5: '支援 JSON、YAML 同 <code>.env</code> 多種格式輸出',
+        f6: "零第三方執行時依賴",
+        btnDocs: "專案文件", btnSource: "GitHub 倉庫", btnArch: "架構設計說明",
+        hMore: "更多專案", badgeMac: "macOS", badgeIOS: "iOS",
+        clipDesc: "一個細細粒嘅 macOS 選單列架生，將剪貼簿入面嘅富文本變做純文字。",
+        lensDesc: "同一段輸入，換幾個角度睇——iOS 上嘅結構化多視角分析。",
+        btnView: "睇下 →", btnSourceShort: "原始碼",
+        hToolbox: "工具同方向",
+        chipCli: "CLI 同工作流自動化", chipTooling: "開發者架生",
+        chipOss: "開源軟件開發", chipWriting: "技術文件編寫",
+        hAbout: "我做緊嘅嘢",
+        about1: "我專注喺開發者工具、系統自動化同配置管理。我鍾意將日常開發中繁瑣、易錯嘅重複性工作，整理做清晰、可靠又好測好維護嘅 Workflow。",
+        about2: "我爲日常開發同系統工作流整簡單實用嘅工具，注重零執行時負擔同穩定嘅表現。我好注重 Code 嘅可讀性、齊全嘅 Unit Test 同清晰嘅技術文件，幫大家快手搞定實際問題。",
+        hContact: "聯絡交流", contactTitle: "保持聯絡。",
+        contactText: "有諗法、疑問，或者想整啲得意嘢？歡迎發電郵畀我。",
+        btnEmailMe: "發電郵畀我", footerEmail: "電郵"
       }
     };
 

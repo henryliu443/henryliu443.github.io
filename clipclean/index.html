@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clipclean — macOS Plain Text Utility</title>
+  <meta name="description" content="A tiny macOS menu bar utility that strips rich text from the clipboard.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📋</text></svg>">
+  <style>
+    :root {
+      --bg: #fbfbfd; --fg: #111113; --muted: #6b6b74; --line: #e6e6ea; --card: #ffffff;
+      --accent: #2f6bff; --accent-2: #8b5cf6; --accent-fg: #ffffff;
+      --shadow: 0 1px 2px rgba(17,17,19,.04), 0 8px 24px rgba(17,17,19,.05);
+    }
+    [data-theme="dark"] {
+      --bg: #08080a; --fg: #f5f5f7; --muted: #9a9aa3; --line: #24242a; --card: #121216;
+      --accent: #6f9bff; --accent-2: #b18cff;
+      --shadow: 0 1px 2px rgba(0,0,0,.4), 0 12px 32px rgba(0,0,0,.35);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
+        "PingFang SC", "PingFang HK", "Microsoft JhengHei", "Microsoft YaHei", sans-serif;
+      background: var(--bg); color: var(--fg); line-height: 1.65; -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; }
+    .wrap { max-width: 900px; margin: 0 auto; padding: 0 1.5rem; }
+    .accent-text {
+      background: linear-gradient(100deg, var(--accent), var(--accent-2));
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    nav {
+      position: sticky; top: 0; z-index: 50;
+      backdrop-filter: saturate(180%) blur(14px); -webkit-backdrop-filter: saturate(180%) blur(14px);
+      background: color-mix(in srgb, var(--bg) 78%, transparent); border-bottom: 1px solid var(--line);
+    }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 60px; }
+    .brand { font-weight: 700; letter-spacing: -0.01em; text-decoration: none; }
+    .nav-right { display: flex; align-items: center; gap: 1.1rem; }
+    .nav-links { display: flex; align-items: center; gap: 1.25rem; font-size: .9rem; }
+    .nav-links a { text-decoration: none; color: var(--muted); }
+    .nav-links a:hover { color: var(--fg); }
+    .lang { display: inline-flex; border: 1px solid var(--line); border-radius: 9px; overflow: hidden; background: var(--card); }
+    .lang button { border: 0; background: transparent; color: var(--muted); font: inherit; font-size: .78rem; font-weight: 600; padding: .3rem .5rem; cursor: pointer; }
+    .lang button.active { background: var(--accent); color: var(--accent-fg); }
+    #theme { border: 1px solid var(--line); background: var(--card); color: var(--fg); width: 34px; height: 34px; border-radius: 9px; cursor: pointer; font-size: 15px; line-height: 1; }
+    #theme:hover { border-color: var(--accent); }
+    @media (max-width: 720px) { .nav-links { display: none; } }
+
+    header { padding: 4.5rem 0 2rem; position: relative; overflow: hidden; }
+    header::before {
+      content: ""; position: absolute; inset: -40% 30% auto -10%; height: 460px;
+      background: radial-gradient(closest-side, color-mix(in srgb, var(--accent) 22%, transparent), transparent 70%);
+      filter: blur(10px); pointer-events: none;
+    }
+    .eyebrow { font-size: .82rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
+    h1 { margin-top: 1rem; font-size: clamp(2.4rem, 7vw, 3.8rem); line-height: 1.03; letter-spacing: -0.035em; font-weight: 800; }
+    .lead { margin-top: 1.25rem; max-width: 42rem; font-size: clamp(1.05rem, 2.3vw, 1.25rem); color: var(--muted); }
+    .cta { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 2rem; }
+    .btn {
+      display: inline-flex; align-items: center; gap: .45rem; padding: .6rem 1.05rem; border-radius: 10px;
+      font-size: .9rem; font-weight: 600; text-decoration: none; border: 1px solid var(--line);
+      background: var(--card); color: var(--fg); transition: transform .12s ease, border-color .15s ease, opacity .15s ease;
+    }
+    .btn:hover { transform: translateY(-1px); border-color: var(--accent); }
+    .btn.primary { background: linear-gradient(100deg, var(--accent), var(--accent-2)); color: var(--accent-fg); border-color: transparent; box-shadow: 0 6px 18px color-mix(in srgb, var(--accent) 30%, transparent); }
+    .btn.primary:hover { opacity: .93; }
+
+    section { padding: 3rem 0; border-top: 1px solid var(--line); }
+    h2 { font-size: .8rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin-bottom: 1.5rem; }
+    .prose p { color: var(--muted); max-width: 46rem; }
+    .prose p + p { margin-top: 1rem; }
+    .features { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: .6rem 1.5rem; font-size: .94rem; }
+    .features li { padding-left: 1.4rem; position: relative; }
+    .features li::before { content: "→"; position: absolute; left: 0; color: var(--accent); }
+    @media (max-width: 620px) { .features { grid-template-columns: 1fr; } }
+    .chips { display: flex; flex-wrap: wrap; gap: .5rem; }
+    .chip { font-size: .85rem; color: var(--muted); border: 1px solid var(--line); background: var(--card); border-radius: 999px; padding: .35rem .85rem; }
+
+    footer {
+      padding: 2.5rem 0 4rem; border-top: 1px solid var(--line);
+      display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem;
+      color: var(--muted); font-size: .88rem;
+    }
+    footer a { text-decoration: none; }
+    footer a:hover { color: var(--accent); }
+    .footer-links { display: flex; gap: 1.25rem; }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="wrap nav-inner">
+      <a class="brand" href="/">Henry Liu</a>
+      <div class="nav-right">
+        <div class="nav-links">
+          <a href="/" data-i18n="navHome">Home</a>
+          <a href="/#projects" data-i18n="navProjects">Projects</a>
+          <a href="https://github.com/henryliu443/clipclean">GitHub</a>
+        </div>
+        <div class="lang" role="group" aria-label="Language">
+          <button type="button" data-lang="en">EN</button>
+          <button type="button" data-lang="zh-Hans">简</button>
+          <button type="button" data-lang="yue">廣</button>
+        </div>
+        <button id="theme" type="button" aria-label="Toggle theme">◐</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="wrap">
+    <header>
+      <p class="eyebrow" data-i18n="eyebrow">macOS Utility · Open Source</p>
+      <h1>Clipclean</h1>
+      <p class="lead" data-i18n="lead">
+        A tiny macOS menu bar utility that strips rich text from the clipboard.
+      </p>
+      <div class="cta">
+        <a class="btn primary" href="https://github.com/henryliu443/clipclean/releases/latest" data-i18n="btnDownload">Download for macOS</a>
+        <a class="btn" href="https://github.com/henryliu443/clipclean" data-i18n="btnSource">Source on GitHub</a>
+      </div>
+    </header>
+
+    <section>
+      <h2 data-i18n="hAbout">About</h2>
+      <div class="prose">
+        <p data-i18n="about">
+          When Plain Text Mode is on, every copy is reduced to its plain-text representation:
+          fonts, colors and other rich flavours are dropped, while Unicode, emoji, tabs and line
+          breaks are preserved. When it is off, the clipboard behaves exactly as macOS normally does.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <h2 data-i18n="hFeatures">Highlights</h2>
+      <ul class="features">
+        <li data-i18n="f1">Menu bar only — no Dock icon, no main window</li>
+        <li data-i18n="f2">Liquid Glass panel with a large slide switch</li>
+        <li data-i18n="f3">Global hot keys: F6 on, F5 off</li>
+        <li data-i18n="f4">Launch at Login</li>
+        <li data-i18n="f5">English / 中文 switch inside Settings</li>
+        <li data-i18n="f6">No network access, no permissions, no history</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2 data-i18n="hStack">Stack</h2>
+      <div class="chips">
+        <span class="chip">Swift</span>
+        <span class="chip">macOS 14+</span>
+        <span class="chip">SwiftUI · AppKit</span>
+        <span class="chip">Carbon Hot Keys</span>
+        <span class="chip">Apache-2.0</span>
+      </div>
+    </section>
+
+    <footer>
+      <span>© <span id="year">2026</span> Henry Liu</span>
+      <span class="footer-links">
+        <a href="/" data-i18n="navHome">Home</a>
+        <a href="https://github.com/henryliu443/clipclean" data-i18n="btnSource">Source on GitHub</a>
+      </span>
+    </footer>
+  </div>
+
+  <script>
+    var I18N = {
+      "en": {
+        title: "Clipclean — macOS Plain Text Utility",
+        navHome: "Home", navProjects: "Projects",
+        eyebrow: "macOS Utility · Open Source",
+        lead: "A tiny macOS menu bar utility that strips rich text from the clipboard.",
+        btnDownload: "Download for macOS", btnSource: "Source on GitHub",
+        hAbout: "About",
+        about: "When Plain Text Mode is on, every copy is reduced to its plain-text representation: fonts, colors and other rich flavours are dropped, while Unicode, emoji, tabs and line breaks are preserved. When it is off, the clipboard behaves exactly as macOS normally does.",
+        hFeatures: "Highlights",
+        f1: "Menu bar only — no Dock icon, no main window",
+        f2: "Liquid Glass panel with a large slide switch",
+        f3: "Global hot keys: F6 on, F5 off",
+        f4: "Launch at Login",
+        f5: "English / 中文 switch inside Settings",
+        f6: "No network access, no permissions, no history",
+        hStack: "Stack"
+      },
+      "zh-Hans": {
+        title: "Clipclean — macOS 纯文本工具",
+        navHome: "首页", navProjects: "项目",
+        eyebrow: "macOS 工具 · 开源",
+        lead: "一个极简的 macOS 菜单栏工具，把剪贴板里的富文本剥离成纯文本。",
+        btnDownload: "下载 macOS 版", btnSource: "GitHub 源码",
+        hAbout: "简介",
+        about: "打开纯文本模式后，每次复制都会被还原为纯文本：字体、颜色等富文本格式被丢弃，而 Unicode、Emoji、制表符与换行都会保留。关闭后，剪贴板行为与 macOS 原生完全一致。",
+        hFeatures: "亮点",
+        f1: "仅驻留菜单栏——没有 Dock 图标，也没有主窗口",
+        f2: "液态玻璃面板，配一个大号滑动开关",
+        f3: "全局热键：F6 开启，F5 关闭",
+        f4: "开机自动启动",
+        f5: "设置内可切换 English / 中文",
+        f6: "不联网、不申请权限、不记录历史",
+        hStack: "技术栈"
+      },
+      "yue": {
+        title: "Clipclean — macOS 純文字架生",
+        navHome: "首頁", navProjects: "專案",
+        eyebrow: "macOS 架生 · 開源",
+        lead: "一個細細粒嘅 macOS 選單列架生，將剪貼簿入面嘅富文本變做純文字。",
+        btnDownload: "下載 macOS 版", btnSource: "GitHub 原始碼",
+        hAbout: "簡介",
+        about: "開咗純文字模式之後，每次複製都會還原做純文字：字體、顏色等富文本格式會掉走，但 Unicode、Emoji、Tab 同換行都會保留。熄咗之後，剪貼簿嘅行為同 macOS 原生一模一樣。",
+        hFeatures: "亮點",
+        f1: "淨係喺選單列——冇 Dock 圖示，又冇主視窗",
+        f2: "液態玻璃面板，配一個大掣",
+        f3: "全局熱鍵：F6 開，F5 熄",
+        f4: "開機自動啟動",
+        f5: "設定入面可以切 English / 中文",
+        f6: "唔連網、唔要權限、唔記歷史",
+        hStack: "技術棧"
+      }
+    };
+
+    function applyLang(lang) {
+      var dict = I18N[lang] || I18N.en;
+      document.documentElement.lang = lang;
+      document.title = dict.title;
+      document.querySelectorAll("[data-i18n]").forEach(function (el) {
+        var key = el.getAttribute("data-i18n");
+        if (dict[key] !== undefined) el.textContent = dict[key];
+      });
+      document.querySelectorAll(".lang button").forEach(function (btn) {
+        btn.classList.toggle("active", btn.getAttribute("data-lang") === lang);
+      });
+      localStorage.setItem("lang", lang);
+    }
+
+    function pickLang() {
+      var saved = localStorage.getItem("lang");
+      if (saved && I18N[saved]) return saved;
+      var nav = (navigator.language || "en").toLowerCase();
+      if (nav.indexOf("zh") === 0) return /hant|hk|tw|mo|yue/.test(nav) ? "yue" : "zh-Hans";
+      return "en";
+    }
+
+    (function () {
+      var root = document.documentElement;
+      var savedTheme = localStorage.getItem("theme");
+      if (savedTheme) root.setAttribute("data-theme", savedTheme);
+      document.getElementById("theme").addEventListener("click", function () {
+        var next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+        root.setAttribute("data-theme", next);
+        localStorage.setItem("theme", next);
+      });
+      document.querySelectorAll(".lang button").forEach(function (btn) {
+        btn.addEventListener("click", function () { applyLang(btn.getAttribute("data-lang")); });
+      });
+      document.getElementById("year").textContent = new Date().getFullYear();
+      applyLang(pickLang());
+    })();
+  </script>
+</body>
+</html>

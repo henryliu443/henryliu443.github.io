@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lens — Multi-Perspective Analysis for iOS</title>
+  <meta name="description" content="One input, multiple perspectives. A structured multi-perspective analysis app for iOS.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔎</text></svg>">
+  <style>
+    :root {
+      --bg: #fbfbfd; --fg: #111113; --muted: #6b6b74; --line: #e6e6ea; --card: #ffffff;
+      --accent: #2f6bff; --accent-2: #8b5cf6; --accent-fg: #ffffff;
+      --shadow: 0 1px 2px rgba(17,17,19,.04), 0 8px 24px rgba(17,17,19,.05);
+    }
+    [data-theme="dark"] {
+      --bg: #08080a; --fg: #f5f5f7; --muted: #9a9aa3; --line: #24242a; --card: #121216;
+      --accent: #6f9bff; --accent-2: #b18cff;
+      --shadow: 0 1px 2px rgba(0,0,0,.4), 0 12px 32px rgba(0,0,0,.35);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
+        "PingFang SC", "PingFang HK", "Microsoft JhengHei", "Microsoft YaHei", sans-serif;
+      background: var(--bg); color: var(--fg); line-height: 1.65; -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; }
+    .wrap { max-width: 900px; margin: 0 auto; padding: 0 1.5rem; }
+    .accent-text {
+      background: linear-gradient(100deg, var(--accent), var(--accent-2));
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    nav {
+      position: sticky; top: 0; z-index: 50;
+      backdrop-filter: saturate(180%) blur(14px); -webkit-backdrop-filter: saturate(180%) blur(14px);
+      background: color-mix(in srgb, var(--bg) 78%, transparent); border-bottom: 1px solid var(--line);
+    }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 60px; }
+    .brand { font-weight: 700; letter-spacing: -0.01em; text-decoration: none; }
+    .nav-right { display: flex; align-items: center; gap: 1.1rem; }
+    .nav-links { display: flex; align-items: center; gap: 1.25rem; font-size: .9rem; }
+    .nav-links a { text-decoration: none; color: var(--muted); }
+    .nav-links a:hover { color: var(--fg); }
+    .lang { display: inline-flex; border: 1px solid var(--line); border-radius: 9px; overflow: hidden; background: var(--card); }
+    .lang button { border: 0; background: transparent; color: var(--muted); font: inherit; font-size: .78rem; font-weight: 600; padding: .3rem .5rem; cursor: pointer; }
+    .lang button.active { background: var(--accent); color: var(--accent-fg); }
+    #theme { border: 1px solid var(--line); background: var(--card); color: var(--fg); width: 34px; height: 34px; border-radius: 9px; cursor: pointer; font-size: 15px; line-height: 1; }
+    #theme:hover { border-color: var(--accent); }
+    @media (max-width: 720px) { .nav-links { display: none; } }
+
+    header { padding: 4.5rem 0 2rem; position: relative; overflow: hidden; }
+    header::before {
+      content: ""; position: absolute; inset: -40% 30% auto -10%; height: 460px;
+      background: radial-gradient(closest-side, color-mix(in srgb, var(--accent) 22%, transparent), transparent 70%);
+      filter: blur(10px); pointer-events: none;
+    }
+    .eyebrow { font-size: .82rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
+    h1 { margin-top: 1rem; font-size: clamp(2.4rem, 7vw, 3.8rem); line-height: 1.03; letter-spacing: -0.035em; font-weight: 800; }
+    .lead { margin-top: 1.25rem; max-width: 42rem; font-size: clamp(1.05rem, 2.3vw, 1.25rem); color: var(--muted); }
+    .cta { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 2rem; }
+    .btn {
+      display: inline-flex; align-items: center; gap: .45rem; padding: .6rem 1.05rem; border-radius: 10px;
+      font-size: .9rem; font-weight: 600; text-decoration: none; border: 1px solid var(--line);
+      background: var(--card); color: var(--fg); transition: transform .12s ease, border-color .15s ease, opacity .15s ease;
+    }
+    .btn:hover { transform: translateY(-1px); border-color: var(--accent); }
+    .btn.primary { background: linear-gradient(100deg, var(--accent), var(--accent-2)); color: var(--accent-fg); border-color: transparent; box-shadow: 0 6px 18px color-mix(in srgb, var(--accent) 30%, transparent); }
+    .btn.primary:hover { opacity: .93; }
+
+    section { padding: 3rem 0; border-top: 1px solid var(--line); }
+    h2 { font-size: .8rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin-bottom: 1.5rem; }
+    .prose p { color: var(--muted); max-width: 46rem; }
+    .prose p + p { margin-top: 1rem; }
+    .features { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: .6rem 1.5rem; font-size: .94rem; }
+    .features li { padding-left: 1.4rem; position: relative; }
+    .features li::before { content: "→"; position: absolute; left: 0; color: var(--accent); }
+    @media (max-width: 620px) { .features { grid-template-columns: 1fr; } }
+
+    .lenses { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+    @media (max-width: 720px) { .lenses { grid-template-columns: 1fr; } }
+    .lens { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 1.25rem; box-shadow: var(--shadow); }
+    .lens h3 { font-size: 1rem; letter-spacing: -0.01em; }
+    .lens p { color: var(--muted); font-size: .88rem; margin-top: .4rem; }
+
+    .chips { display: flex; flex-wrap: wrap; gap: .5rem; }
+    .chip { font-size: .85rem; color: var(--muted); border: 1px solid var(--line); background: var(--card); border-radius: 999px; padding: .35rem .85rem; }
+
+    footer {
+      padding: 2.5rem 0 4rem; border-top: 1px solid var(--line);
+      display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem;
+      color: var(--muted); font-size: .88rem;
+    }
+    footer a { text-decoration: none; }
+    footer a:hover { color: var(--accent); }
+    .footer-links { display: flex; gap: 1.25rem; }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="wrap nav-inner">
+      <a class="brand" href="/">Henry Liu</a>
+      <div class="nav-right">
+        <div class="nav-links">
+          <a href="/" data-i18n="navHome">Home</a>
+          <a href="/#projects" data-i18n="navProjects">Projects</a>
+          <a href="https://github.com/henryliu443/Lens">GitHub</a>
+        </div>
+        <div class="lang" role="group" aria-label="Language">
+          <button type="button" data-lang="en">EN</button>
+          <button type="button" data-lang="zh-Hans">简</button>
+          <button type="button" data-lang="yue">廣</button>
+        </div>
+        <button id="theme" type="button" aria-label="Toggle theme">◐</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="wrap">
+    <header>
+      <p class="eyebrow" data-i18n="eyebrow">iOS App · Open Source</p>
+      <h1>Lens</h1>
+      <p class="lead" data-i18n="lead">
+        Same input, seen from another angle — structured multi-perspective analysis.
+      </p>
+      <div class="cta">
+        <a class="btn primary" href="https://github.com/henryliu443/Lens" data-i18n="btnSource">Source on GitHub</a>
+        <a class="btn" href="https://github.com/henryliu443/Lens#readme" data-i18n="btnReadme">Read the README</a>
+      </div>
+    </header>
+
+    <section>
+      <h2 data-i18n="hAbout">About</h2>
+      <div class="prose">
+        <p data-i18n="about">
+          Lens is a native iOS multi-perspective analysis tool: enter a piece of text, pick a Lens,
+          and the AI returns several sections following that Lens's fixed structure. It is not a chat
+          tool — it is structured, multi-perspective review.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <h2 data-i18n="hLenses">The Three Lenses</h2>
+      <div class="lenses">
+        <div class="lens">
+          <h3 data-i18n="l1Title">Decision Review</h3>
+          <p data-i18n="l1Desc">Calm, structured decision analysis.</p>
+        </div>
+        <div class="lens">
+          <h3 data-i18n="l2Title">Writing Review</h3>
+          <p data-i18n="l2Desc">A strict but friendly editor.</p>
+        </div>
+        <div class="lens">
+          <h3 data-i18n="l3Title">Communication Review</h3>
+          <p data-i18n="l3Desc">Anticipates how the other side will read it.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2 data-i18n="hFeatures">Highlights</h2>
+      <ul class="features">
+        <li data-i18n="f1">Three genuinely different reading perspectives</li>
+        <li data-i18n="f2">Fixed, structured output per lens</li>
+        <li data-i18n="f3">OpenAI, Anthropic, DeepSeek, or Local (offline)</li>
+        <li data-i18n="f4">History persisted with SwiftData</li>
+        <li data-i18n="f5">API keys kept in the Keychain</li>
+        <li data-i18n="f6">Zero third-party dependencies</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2 data-i18n="hStack">Stack</h2>
+      <div class="chips">
+        <span class="chip">Swift</span>
+        <span class="chip">iOS 17+</span>
+        <span class="chip">SwiftUI · MVVM</span>
+        <span class="chip">SwiftData</span>
+        <span class="chip">Apache-2.0</span>
+      </div>
+    </section>
+
+    <footer>
+      <span>© <span id="year">2026</span> Henry Liu</span>
+      <span class="footer-links">
+        <a href="/" data-i18n="navHome">Home</a>
+        <a href="https://github.com/henryliu443/Lens" data-i18n="btnSource">Source on GitHub</a>
+      </span>
+    </footer>
+  </div>
+
+  <script>
+    var I18N = {
+      "en": {
+        title: "Lens — Multi-Perspective Analysis for iOS",
+        navHome: "Home", navProjects: "Projects",
+        eyebrow: "iOS App · Open Source",
+        lead: "Same input, seen from another angle — structured multi-perspective analysis.",
+        btnSource: "Source on GitHub", btnReadme: "Read the README",
+        hAbout: "About",
+        about: "Lens is a native iOS multi-perspective analysis tool: enter a piece of text, pick a Lens, and the AI returns several sections following that Lens's fixed structure. It is not a chat tool — it is structured, multi-perspective review.",
+        hLenses: "The Three Lenses",
+        l1Title: "Decision Review", l1Desc: "Calm, structured decision analysis.",
+        l2Title: "Writing Review", l2Desc: "A strict but friendly editor.",
+        l3Title: "Communication Review", l3Desc: "Anticipates how the other side will read it.",
+        hFeatures: "Highlights",
+        f1: "Three genuinely different reading perspectives",
+        f2: "Fixed, structured output per lens",
+        f3: "OpenAI, Anthropic, DeepSeek, or Local (offline)",
+        f4: "History persisted with SwiftData",
+        f5: "API keys kept in the Keychain",
+        f6: "Zero third-party dependencies",
+        hStack: "Stack"
+      },
+      "zh-Hans": {
+        title: "Lens — iOS 多视角分析工具",
+        navHome: "首页", navProjects: "项目",
+        eyebrow: "iOS 应用 · 开源",
+        lead: "同一段输入，换多个角度看——结构化多视角分析。",
+        btnSource: "GitHub 源码", btnReadme: "阅读 README",
+        hAbout: "简介",
+        about: "Lens 是一款原生 iOS「多视角分析」工具：输入一段文字，选择一个 Lens（分析视角），AI 就会按该 Lens 固定的结构返回若干段分析。它不是聊天工具，而是结构化的多视角审阅。",
+        hLenses: "三个视角",
+        l1Title: "决策审阅", l1Desc: "冷静、结构化的决策分析。",
+        l2Title: "写作审阅", l2Desc: "一位严格又友好的编辑。",
+        l3Title: "沟通审阅", l3Desc: "预判对方会如何解读。",
+        hFeatures: "亮点",
+        f1: "三种真正不同的阅读视角",
+        f2: "每个视角都有固定、结构化的输出",
+        f3: "支持 OpenAI、Anthropic、DeepSeek 或本地离线",
+        f4: "使用 SwiftData 持久化历史记录",
+        f5: "API Key 保存在 Keychain",
+        f6: "零第三方依赖",
+        hStack: "技术栈"
+      },
+      "yue": {
+        title: "Lens — iOS 多視角分析架生",
+        navHome: "首頁", navProjects: "專案",
+        eyebrow: "iOS App · 開源",
+        lead: "同一段輸入，換幾個角度睇——結構化多視角分析。",
+        btnSource: "GitHub 原始碼", btnReadme: "睇下 README",
+        hAbout: "簡介",
+        about: "Lens 係一個原生 iOS「多視角分析」工具：輸入一段文字，揀一個 Lens（分析視角），AI 就會跟嗰個 Lens 固定嘅結構回傳幾段分析。佢唔係聊天工具，而係結構化嘅多視角審閱。",
+        hLenses: "三個視角",
+        l1Title: "決策審閱", l1Desc: "冷靜、結構化嘅決策分析。",
+        l2Title: "寫作審閱", l2Desc: "一個嚴格又友善嘅編輯。",
+        l3Title: "溝通審閱", l3Desc: "預判對方會點樣解讀。",
+        hFeatures: "亮點",
+        f1: "三種真正唔同嘅閱讀視角",
+        f2: "每個視角都有固定、結構化嘅輸出",
+        f3: "支援 OpenAI、Anthropic、DeepSeek 或者本地離線",
+        f4: "用 SwiftData 儲存歷史",
+        f5: "API Key 放喺 Keychain",
+        f6: "零第三方依賴",
+        hStack: "技術棧"
+      }
+    };
+
+    function applyLang(lang) {
+      var dict = I18N[lang] || I18N.en;
+      document.documentElement.lang = lang;
+      document.title = dict.title;
+      document.querySelectorAll("[data-i18n]").forEach(function (el) {
+        var key = el.getAttribute("data-i18n");
+        if (dict[key] !== undefined) el.textContent = dict[key];
+      });
+      document.querySelectorAll(".lang button").forEach(function (btn) {
+        btn.classList.toggle("active", btn.getAttribute("data-lang") === lang);
+      });
+      localStorage.setItem("lang", lang);
+    }
+
+    function pickLang() {
+      var saved = localStorage.getItem("lang");
+      if (saved && I18N[saved]) return saved;
+      var nav = (navigator.language || "en").toLowerCase();
+      if (nav.indexOf("zh") === 0) return /hant|hk|tw|mo|yue/.test(nav) ? "yue" : "zh-Hans";
+      return "en";
+    }
+
+    (function () {
+      var root = document.documentElement;
+      var savedTheme = localStorage.getItem("theme");
+      if (savedTheme) root.setAttribute("data-theme", savedTheme);
+      document.getElementById("theme").addEventListener("click", function () {
+        var next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+        root.setAttribute("data-theme", next);
+        localStorage.setItem("theme", next);
+      });
+      document.querySelectorAll(".lang button").forEach(function (btn) {
+        btn.addEventListener("click", function () { applyLang(btn.getAttribute("data-lang")); });
+      });
+      document.getElementById("year").textContent = new Date().getFullYear();
+      applyLang(pickLang());
+    })();
+  </script>
+</body>
+</html>
