@@ -3,385 +3,257 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Clipclean — Documentation</title>
-  <meta name="description" content="Clipclean documentation (README).">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📄</text></svg>">
+  <title>Clipclean — macOS Plain Text Utility</title>
+  <meta name="description" content="A tiny macOS menu bar utility that strips rich text from the clipboard.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📋</text></svg>">
   <style>
     :root {
       --bg: #fbfbfd; --fg: #111113; --muted: #6b6b74; --line: #e6e6ea; --card: #ffffff;
-      --accent: #2f6bff; --accent-2: #8b5cf6; --accent-fg: #ffffff; --code-bg: #f4f4f7;
+      --accent: #2f6bff; --accent-2: #8b5cf6; --accent-fg: #ffffff;
       --shadow: 0 1px 2px rgba(17,17,19,.04), 0 8px 24px rgba(17,17,19,.05);
     }
     [data-theme="dark"] {
       --bg: #08080a; --fg: #f5f5f7; --muted: #9a9aa3; --line: #24242a; --card: #121216;
-      --accent: #6f9bff; --accent-2: #b18cff; --code-bg: #16161b;
+      --accent: #6f9bff; --accent-2: #b18cff;
       --shadow: 0 1px 2px rgba(0,0,0,.4), 0 12px 32px rgba(0,0,0,.35);
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
         "PingFang SC", "PingFang HK", "Microsoft JhengHei", "Microsoft YaHei", sans-serif;
-      background: var(--bg); color: var(--fg); line-height: 1.7; -webkit-font-smoothing: antialiased;
+      background: var(--bg); color: var(--fg); line-height: 1.65; -webkit-font-smoothing: antialiased;
     }
-    a { color: var(--accent); text-decoration: none; }
-    a:hover { text-decoration: underline; }
+    a { color: inherit; }
+    .wrap { max-width: 900px; margin: 0 auto; padding: 0 1.5rem; }
+    .accent-text {
+      background: linear-gradient(100deg, var(--accent), var(--accent-2));
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
     nav {
       position: sticky; top: 0; z-index: 50;
       backdrop-filter: saturate(180%) blur(14px); -webkit-backdrop-filter: saturate(180%) blur(14px);
       background: color-mix(in srgb, var(--bg) 78%, transparent); border-bottom: 1px solid var(--line);
     }
-    .nav-inner { max-width: 860px; margin: 0 auto; padding: 0 1.5rem; display: flex; align-items: center; justify-content: space-between; height: 60px; }
-    .brand { font-weight: 700; letter-spacing: -0.01em; text-decoration: none; color: var(--fg); }
-    .nav-right { display: flex; align-items: center; gap: 1rem; }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 60px; }
+    .brand { font-weight: 700; letter-spacing: -0.01em; text-decoration: none; }
+    .nav-right { display: flex; align-items: center; gap: 1.1rem; }
     .nav-links { display: flex; align-items: center; gap: 1.25rem; font-size: .9rem; }
-    .nav-links a { color: var(--muted); }
+    .nav-links a { text-decoration: none; color: var(--muted); }
     .nav-links a:hover { color: var(--fg); }
     .lang { display: inline-flex; border: 1px solid var(--line); border-radius: 9px; overflow: hidden; background: var(--card); }
-    .lang button { border: 0; background: transparent; color: var(--muted); font: inherit; font-size: .78rem; font-weight: 600; padding: .3rem .55rem; cursor: pointer; }
+    .lang button { border: 0; background: transparent; color: var(--muted); font: inherit; font-size: .78rem; font-weight: 600; padding: .3rem .5rem; cursor: pointer; }
     .lang button.active { background: var(--accent); color: var(--accent-fg); }
     #theme { border: 1px solid var(--line); background: var(--card); color: var(--fg); width: 34px; height: 34px; border-radius: 9px; cursor: pointer; font-size: 15px; line-height: 1; }
     #theme:hover { border-color: var(--accent); }
     @media (max-width: 720px) { .nav-links { display: none; } }
 
-    main { max-width: 860px; margin: 0 auto; padding: 2.5rem 1.5rem 5rem; }
-    .doc { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 2.25rem 2rem; box-shadow: var(--shadow); }
-    @media (max-width: 620px) { .doc { padding: 1.5rem 1.15rem; } }
-    .doc h1 { font-size: 1.9rem; letter-spacing: -0.02em; margin: 0 0 1rem; }
-    .doc h2 { font-size: 1.3rem; letter-spacing: -0.02em; margin: 2.2rem 0 .8rem; padding-bottom: .4rem; border-bottom: 1px solid var(--line); }
-    .doc h3 { font-size: 1.08rem; margin: 1.6rem 0 .5rem; }
-    .doc h4 { font-size: .98rem; margin: 1.2rem 0 .4rem; }
-    .doc p { margin: .8rem 0; }
-    .doc ul, .doc ol { margin: .8rem 0 .8rem 1.4rem; }
-    .doc li { margin: .3rem 0; }
-    .doc img { max-width: 100%; border: 1px solid var(--line); border-radius: 10px; margin: .4rem 0; }
-    .doc code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .88em; background: var(--code-bg); padding: .12em .38em; border-radius: 5px; }
-    .doc pre { background: var(--code-bg); border: 1px solid var(--line); border-radius: 10px; padding: 1rem; overflow-x: auto; margin: 1rem 0; }
-    .doc pre code { background: none; padding: 0; font-size: .85rem; }
-    .doc blockquote { border-left: 3px solid var(--accent); background: color-mix(in srgb, var(--accent) 7%, transparent); padding: .6rem 1rem; border-radius: 0 8px 8px 0; margin: 1rem 0; color: var(--muted); }
-    .doc table { border-collapse: collapse; width: 100%; margin: 1rem 0; font-size: .92rem; display: block; overflow-x: auto; }
-    .doc th, .doc td { border: 1px solid var(--line); padding: .5rem .7rem; text-align: left; vertical-align: top; }
-    .doc th { background: var(--code-bg); font-weight: 600; }
-    .doc hr { border: 0; border-top: 1px solid var(--line); margin: 2rem 0; }
-    .doc a { text-decoration: none; }
-    .doc a:hover { text-decoration: underline; }
-    [hidden] { display: none !important; }
+    header { padding: 4.5rem 0 2rem; position: relative; overflow: hidden; }
+    header::before {
+      content: ""; position: absolute; inset: -40% 30% auto -10%; height: 460px;
+      background: radial-gradient(closest-side, color-mix(in srgb, var(--accent) 22%, transparent), transparent 70%);
+      filter: blur(10px); pointer-events: none;
+    }
+    .eyebrow { font-size: .82rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
+    h1 { margin-top: 1rem; font-size: clamp(2.4rem, 7vw, 3.8rem); line-height: 1.03; letter-spacing: -0.035em; font-weight: 800; }
+    .lead { margin-top: 1.25rem; max-width: 42rem; font-size: clamp(1.05rem, 2.3vw, 1.25rem); color: var(--muted); }
+    .cta { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 2rem; }
+    .btn {
+      display: inline-flex; align-items: center; gap: .45rem; padding: .6rem 1.05rem; border-radius: 10px;
+      font-size: .9rem; font-weight: 600; text-decoration: none; border: 1px solid var(--line);
+      background: var(--card); color: var(--fg); transition: transform .12s ease, border-color .15s ease, opacity .15s ease;
+    }
+    .btn:hover { transform: translateY(-1px); border-color: var(--accent); }
+    .btn.primary { background: linear-gradient(100deg, var(--accent), var(--accent-2)); color: var(--accent-fg); border-color: transparent; box-shadow: 0 6px 18px color-mix(in srgb, var(--accent) 30%, transparent); }
+    .btn.primary:hover { opacity: .93; }
+
+    section { padding: 3rem 0; border-top: 1px solid var(--line); }
+    h2 { font-size: .8rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin-bottom: 1.5rem; }
+    .prose p { color: var(--muted); max-width: 46rem; }
+    .prose p + p { margin-top: 1rem; }
+    .features { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: .6rem 1.5rem; font-size: .94rem; }
+    .features li { padding-left: 1.4rem; position: relative; }
+    .features li::before { content: "→"; position: absolute; left: 0; color: var(--accent); }
+    @media (max-width: 620px) { .features { grid-template-columns: 1fr; } }
+    .chips { display: flex; flex-wrap: wrap; gap: .5rem; }
+    .chip { font-size: .85rem; color: var(--muted); border: 1px solid var(--line); background: var(--card); border-radius: 999px; padding: .35rem .85rem; }
+
+    footer {
+      padding: 2.5rem 0 4rem; border-top: 1px solid var(--line);
+      display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem;
+      color: var(--muted); font-size: .88rem;
+    }
+    footer a { text-decoration: none; }
+    footer a:hover { color: var(--accent); }
+    .footer-links { display: flex; gap: 1.25rem; }
   </style>
 </head>
 <body>
   <nav>
-    <div class="nav-inner">
+    <div class="wrap nav-inner">
       <a class="brand" href="/">Henry Liu</a>
       <div class="nav-right">
         <div class="nav-links">
-          <a href="/">Home</a>
+          <a href="/" data-i18n="navHome">Home</a>
+          <a href="/#projects" data-i18n="navProjects">Projects</a>
           <a href="https://github.com/henryliu443/clipclean">GitHub</a>
         </div>
         <div class="lang" role="group" aria-label="Language">
           <button type="button" data-lang="en">EN</button>
-          <button type="button" data-lang="zh">中文</button>
+          <button type="button" data-lang="zh-Hans">简</button>
+          <button type="button" data-lang="yue">廣</button>
         </div>
         <button id="theme" type="button" aria-label="Toggle theme">◐</button>
       </div>
     </div>
   </nav>
-  <main>
-    <article class="doc" id="doc-en"><p>A tiny native macOS menu bar utility that strips rich text from the clipboard.</p>
-<p>When <strong>Plain Text Mode</strong> is on, every copy is reduced to its plain-text
-representation: fonts, colors and other rich flavours are dropped, while
-Unicode, emoji, tabs and line breaks are preserved. When it is off, the
-clipboard behaves exactly as macOS normally does.</p>
-<ul>
-<li>Menu bar only — no Dock icon, no main window</li>
-<li>Liquid Glass panel with a large slide switch</li>
-<li>Right-click the menu bar icon for Mode ▸ On / Off, Settings and Quit</li>
-<li>Global hot keys: <code>F6</code> turns Plain Text Mode on, <code>F5</code> turns it off</li>
-<li>Launch at Login</li>
-<li>English / 中文 switch inside Settings</li>
-<li>No network access, no permissions, no clipboard history</li>
-</ul>
-<h2>Screenshots</h2>
-<table>
-<thead>
-<tr>
-<th>Main panel</th>
-<th>Settings</th>
-<th>Right-click menu</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><img src="https://raw.githubusercontent.com/henryliu443/clipclean/main/Screenshots/01-main.png" alt="Main panel" /></td>
-<td><img src="https://raw.githubusercontent.com/henryliu443/clipclean/main/Screenshots/02-settings.png" alt="Settings" /></td>
-<td><img src="https://raw.githubusercontent.com/henryliu443/clipclean/main/Screenshots/03-menu.png" alt="Right-click menu" /></td>
-</tr>
-</tbody>
-</table>
-<h2>Requirements</h2>
-<ul>
-<li>macOS 14.0 or later (Apple Silicon or Intel)</li>
-<li>Xcode 26+ to build</li>
-</ul>
-<p>On macOS 26 and later the panel uses SwiftUI Liquid Glass (following the
-system <em>Appearance → Liquid Glass</em> setting); on macOS 14–15 it falls back to a
-translucent <code>.ultraThinMaterial</code>.</p>
-<h2>Install</h2>
-<p>Download <code>Clipclean-1.1.1.dmg</code> from the
-<a href="https://github.com/henryliu443/clipclean/releases/latest">latest release</a>, open it, and drag <strong>Clipclean</strong> into
-<strong>Applications</strong>.</p>
-<p>The build in Releases is signed locally, not notarized, so on first launch
-macOS may warn. Right-click the app and choose <strong>Open</strong>, or allow it under
-<strong>System Settings → Privacy &amp; Security</strong>.</p>
-<h2>Behaviour</h2>
-<p><strong>Plain Text Mode: On</strong></p>
-<ul>
-<li>The pasteboard is watched with a run-loop timer polling <code>changeCount</code>
-(macOS has no public pasteboard-changed notification).</li>
-<li>The best available text is taken from <code>public.utf8-plain-text</code>, then RTF,
-then HTML.</li>
-<li>The pasteboard is rewritten with that text only.</li>
-<li>Unicode, emoji, tabs and line breaks are preserved.</li>
-<li>The app ignores the change count produced by its own write, so it can never
-loop.</li>
-<li>Image-only pasteboards and file (URL) copies are left untouched.</li>
-<li>A pasteboard that is already plain text is not rewritten.</li>
-</ul>
-<p><strong>Plain Text Mode: Off</strong></p>
-<ul>
-<li>The timer is stopped entirely. Nothing reads or writes the pasteboard.</li>
-</ul>
-<h2>Shortcuts</h2>
-<table>
-<thead>
-<tr>
-<th>Key</th>
-<th>Action</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>F6</code></td>
-<td>Turn Plain Text Mode on</td>
-</tr>
-<tr>
-<td><code>F5</code></td>
-<td>Turn Plain Text Mode off</td>
-</tr>
-<tr>
-<td><code>Esc</code></td>
-<td>Leave Settings</td>
-</tr>
-</tbody>
-</table>
-<p>Implemented with the Carbon Hot Key API (<code>RegisterEventHotKey</code>), which needs
-<strong>no</strong> Accessibility or Input Monitoring permission.</p>
-<blockquote>
-<p><strong>Magic Keyboard / laptops:</strong> the top row defaults to media keys, so F5/F6
-alone may not reach the app. Either hold <code>Fn</code> (<code>Fn+F6</code> / <code>Fn+F5</code>), or enable
-<em>System Settings → Keyboard → Keyboard Shortcuts… → Function Keys → “Use
-F1, F2, etc. keys as standard function keys”.</em> The 2015 Magic Keyboard
-exposes these two keys directly.</p>
-</blockquote>
-<h2>Building</h2>
-<pre><code class="language-sh">open com.clipclean.paste.xcodeproj   # then ⌘R
-</code></pre>
-<p>Release build and DMG:</p>
-<pre><code class="language-sh">./scripts/package-dmg.sh             # build/Clipclean-1.1.1.dmg
-VERSION=1.2.0 ./scripts/package-dmg.sh
-</code></pre>
-<h2>Signing and notarization (public distribution)</h2>
-<p>The packaged DMG is signed with whatever identity Xcode resolves (or ad-hoc).
-For public distribution it must be signed with a <strong>Developer ID Application</strong>
-certificate and notarized:</p>
-<pre><code class="language-sh"># 1. Archive + export with a Developer ID identity from Xcode, or sign the
-#    built app directly:
-codesign --force --options runtime --timestamp \
-    --sign &quot;Developer ID Application: Your Name (TEAMID)&quot; &quot;Clipclean.app&quot;
 
-# 2. Store notarization credentials once
-xcrun notarytool store-credentials &quot;clipclean-notary&quot; \
-    --apple-id &quot;you@example.com&quot; --team-id &quot;TEAMID&quot; \
-    --password &quot;app-specific-password&quot;
+  <div class="wrap">
+    <header>
+      <p class="eyebrow" data-i18n="eyebrow">macOS Utility · Open Source</p>
+      <h1>Clipclean</h1>
+      <p class="lead" data-i18n="lead">
+        A tiny macOS menu bar utility that strips rich text from the clipboard.
+      </p>
+      <div class="cta">
+        <a class="btn primary" href="https://github.com/henryliu443/clipclean/releases/latest" data-i18n="btnDownload">Download for macOS</a>
+        <a class="btn" href="docs/" data-i18n="btnDocs">Documentation</a>
+        <a class="btn" href="https://github.com/henryliu443/clipclean" data-i18n="btnSource">Source on GitHub</a>
+      </div>
+    </header>
 
-# 3. Notarize and staple
-xcrun notarytool submit build/Clipclean-1.1.1.dmg \
-    --keychain-profile &quot;clipclean-notary&quot; --wait
-xcrun stapler staple build/Clipclean-1.1.1.dmg
-</code></pre>
-<h2>Project layout</h2>
-<pre><code>com.clipclean.paste.xcodeproj
-com.clipclean.paste/
-  com_clipclean_pasteApp.swift   app entry (menu bar accessory)
-  AppDelegate.swift              status item, panel window, hot keys, menu
-  ClipboardController.swift      mode state + pasteboard wiring
-  PanelModel.swift               SwiftUI bridge (state, language, login item)
-  ClipboardPanelView.swift       Liquid Glass panel
-  Localization.swift             English / 中文 strings
-  HotKeyCenter.swift             Carbon global hot keys
-  PlainTextTransformer.swift     pasteboard → plain text
-  PasteboardMonitor.swift        change-count observer
-Screenshots/                     README screenshots
-scripts/package-dmg.sh
-</code></pre>
-<h2>Deliberately not included</h2>
-<p>No clipboard history, search, cloud sync, AI, OCR, or extra settings.</p>
-<h2>License</h2>
-<p>Apache-2.0. See <code>LICENSE</code>.</p>
-</article>
-    <article class="doc" id="doc-zh" hidden><p>一个极小的原生 macOS 菜单栏工具：把剪贴板里的富文本剥成纯文本。</p>
-<p>开启<strong>纯文本模式</strong>后，每次复制都会被还原为纯文本表示：字体、颜色等富文本格式被丢弃，而 Unicode、emoji、制表符和换行完整保留。关闭时，剪贴板行为与 macOS 原生完全一致。</p>
-<ul>
-<li>仅菜单栏 —— 无 Dock 图标，无主窗口</li>
-<li>液态玻璃面板 + 大号滑动开关</li>
-<li>右键菜单栏图标：模式 ▸ 开 / 关、设置、退出</li>
-<li>全局快捷键：<code>F6</code> 开启纯文本模式，<code>F5</code> 关闭</li>
-<li>开机自启</li>
-<li>设置内可切换 English / 中文</li>
-<li>无网络访问、无权限申请、无剪贴板历史</li>
-</ul>
-<h2>截图</h2>
-<table>
-<thead>
-<tr>
-<th>主面板</th>
-<th>设置</th>
-<th>右键菜单</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><img src="https://raw.githubusercontent.com/henryliu443/clipclean/main/Screenshots/01-main.png" alt="主面板" /></td>
-<td><img src="https://raw.githubusercontent.com/henryliu443/clipclean/main/Screenshots/02-settings.png" alt="设置" /></td>
-<td><img src="https://raw.githubusercontent.com/henryliu443/clipclean/main/Screenshots/03-menu.png" alt="右键菜单" /></td>
-</tr>
-</tbody>
-</table>
-<h2>系统要求</h2>
-<ul>
-<li>macOS 14.0 或更高（Apple Silicon 或 Intel）</li>
-<li>构建需要 Xcode 26+</li>
-</ul>
-<p>在 macOS 26 及以上使用 SwiftUI 液态玻璃（跟随系统「外观 → Liquid Glass」设置）；
-macOS 14–15 回退为半透明 <code>.ultraThinMaterial</code> 材质。</p>
-<h2>安装</h2>
-<p>从 <a href="https://github.com/henryliu443/clipclean/releases/latest">最新 Release</a> 下载 <code>Clipclean-1.1.1.dmg</code>，打开后把
-<strong>Clipclean</strong> 拖进 <strong>Applications</strong>。</p>
-<p>Release 里的构建是本地签名、<strong>未公证</strong>的，所以首次打开 macOS 可能拦截。右键
-点应用选<strong>打开</strong>，或到<strong>系统设置 → 隐私与安全性</strong>里放行。</p>
-<h2>行为</h2>
-<p><strong>纯文本模式：开</strong></p>
-<ul>
-<li>用 run-loop 定时器轮询 <code>changeCount</code> 监听剪贴板（macOS 没有公开的剪贴板变更通知）。</li>
-<li>依次尝试取文本：<code>public.utf8-plain-text</code> → RTF → HTML。</li>
-<li>用取到的文本重写剪贴板，只保留纯文本。</li>
-<li>保留 Unicode、emoji、制表符和换行。</li>
-<li>忽略自身写入造成的 changeCount 变化，因此永远不会形成循环。</li>
-<li>纯图片的剪贴板、以及文件（URL）复制，一律不修改。</li>
-<li>已经是纯文本的剪贴板不会重写。</li>
-</ul>
-<p><strong>纯文本模式：关</strong></p>
-<ul>
-<li>定时器完全停止。不读取、不写入剪贴板。</li>
-</ul>
-<h2>快捷键</h2>
-<table>
-<thead>
-<tr>
-<th>按键</th>
-<th>动作</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>F6</code></td>
-<td>开启纯文本模式</td>
-</tr>
-<tr>
-<td><code>F5</code></td>
-<td>关闭纯文本模式</td>
-</tr>
-<tr>
-<td><code>Esc</code></td>
-<td>退出设置页</td>
-</tr>
-</tbody>
-</table>
-<p>使用 Carbon Hot Key API（<code>RegisterEventHotKey</code>）实现，<strong>不需要</strong>辅助功能或输入监控权限。</p>
-<blockquote>
-<p><strong>Magic Keyboard / 笔记本</strong>：顶排默认是媒体键，单按 F5/F6 可能到不了本应用。要么按住 <code>Fn</code>（<code>Fn+F6</code> / <code>Fn+F5</code>），要么打开
-<em>系统设置 → 键盘 → 键盘快捷键… → 功能键 → “将 F1、F2 等键用作标准功能键”。</em> 2015 款 Magic Keyboard 上这两个键可直接使用。</p>
-</blockquote>
-<h2>构建</h2>
-<pre><code class="language-sh">open com.clipclean.paste.xcodeproj   # 然后 ⌘R
-</code></pre>
-<p>Release 构建并打包 DMG：</p>
-<pre><code class="language-sh">./scripts/package-dmg.sh             # 生成 build/Clipclean-1.1.1.dmg
-VERSION=1.2.0 ./scripts/package-dmg.sh
-</code></pre>
-<h2>签名与公证（公开分发）</h2>
-<p>打出的 DMG 使用的是 Xcode 解析到的签名身份（或 ad-hoc）。公开分发需要
-<strong>Developer ID Application</strong> 证书并完成公证：</p>
-<pre><code class="language-sh"># 1. 在 Xcode 里用 Developer ID 归档导出，或直接对已构建的 app 签名：
-codesign --force --options runtime --timestamp \
-    --sign &quot;Developer ID Application: Your Name (TEAMID)&quot; &quot;Clipclean.app&quot;
+    <section>
+      <h2 data-i18n="hAbout">About</h2>
+      <div class="prose">
+        <p data-i18n="about">
+          When Plain Text Mode is on, every copy is reduced to its plain-text representation:
+          fonts, colors and other rich flavours are dropped, while Unicode, emoji, tabs and line
+          breaks are preserved. When it is off, the clipboard behaves exactly as macOS normally does.
+        </p>
+      </div>
+    </section>
 
-# 2. 一次性保存公证凭据
-xcrun notarytool store-credentials &quot;clipclean-notary&quot; \
-    --apple-id &quot;you@example.com&quot; --team-id &quot;TEAMID&quot; \
-    --password &quot;app-specific-password&quot;
+    <section>
+      <h2 data-i18n="hFeatures">Highlights</h2>
+      <ul class="features">
+        <li data-i18n="f1">Menu bar only — no Dock icon, no main window</li>
+        <li data-i18n="f2">Liquid Glass panel with a large slide switch</li>
+        <li data-i18n="f3">Global hot keys: F6 on, F5 off</li>
+        <li data-i18n="f4">Launch at Login</li>
+        <li data-i18n="f5">English / 中文 switch inside Settings</li>
+        <li data-i18n="f6">No network access, no permissions, no history</li>
+      </ul>
+    </section>
 
-# 3. 公证并装订
-xcrun notarytool submit build/Clipclean-1.1.1.dmg \
-    --keychain-profile &quot;clipclean-notary&quot; --wait
-xcrun stapler staple build/Clipclean-1.1.1.dmg
-</code></pre>
-<h2>项目结构</h2>
-<pre><code>com.clipclean.paste.xcodeproj
-com.clipclean.paste/
-  com_clipclean_pasteApp.swift   应用入口（菜单栏 accessory）
-  AppDelegate.swift              状态栏图标、面板窗口、热键、右键菜单
-  ClipboardController.swift      模式状态 + 剪贴板接线
-  PanelModel.swift               SwiftUI 桥接（状态、语言、开机自启）
-  ClipboardPanelView.swift       液态玻璃面板
-  Localization.swift             English / 中文 文案
-  HotKeyCenter.swift             Carbon 全局热键
-  PlainTextTransformer.swift     剪贴板 → 纯文本
-  PasteboardMonitor.swift        changeCount 监听
-Screenshots/                     README 截图
-scripts/package-dmg.sh
-</code></pre>
-<h2>刻意不做</h2>
-<p>不做剪贴板历史、搜索、云同步、AI、OCR，也不做多余设置。</p>
-<h2>许可证 / License</h2>
-<p>Apache-2.0. 详见 <code>LICENSE</code> / See <code>LICENSE</code>.</p>
-</article>
-  </main>
+    <section>
+      <h2 data-i18n="hStack">Stack</h2>
+      <div class="chips">
+        <span class="chip">Swift</span>
+        <span class="chip">macOS 14+</span>
+        <span class="chip">SwiftUI · AppKit</span>
+        <span class="chip">Carbon Hot Keys</span>
+        <span class="chip">Apache-2.0</span>
+      </div>
+    </section>
+
+    <footer>
+      <span>© <span id="year">2026</span> Henry Liu</span>
+      <span class="footer-links">
+        <a href="/" data-i18n="navHome">Home</a>
+        <a href="https://github.com/henryliu443/clipclean" data-i18n="btnSource">Source on GitHub</a>
+      </span>
+    </footer>
+  </div>
+
   <script>
+    var I18N = {
+      "en": {
+        title: "Clipclean — macOS Plain Text Utility",
+        navHome: "Home", navProjects: "Projects",
+        eyebrow: "macOS Utility · Open Source",
+        lead: "A tiny macOS menu bar utility that strips rich text from the clipboard.",
+        btnDownload: "Download for macOS", btnDocs: "Documentation", btnSource: "Source on GitHub",
+        hAbout: "About",
+        about: "When Plain Text Mode is on, every copy is reduced to its plain-text representation: fonts, colors and other rich flavours are dropped, while Unicode, emoji, tabs and line breaks are preserved. When it is off, the clipboard behaves exactly as macOS normally does.",
+        hFeatures: "Highlights",
+        f1: "Menu bar only — no Dock icon, no main window",
+        f2: "Liquid Glass panel with a large slide switch",
+        f3: "Global hot keys: F6 on, F5 off",
+        f4: "Launch at Login",
+        f5: "English / 中文 switch inside Settings",
+        f6: "No network access, no permissions, no history",
+        hStack: "Stack"
+      },
+      "zh-Hans": {
+        title: "Clipclean — macOS 纯文本工具",
+        navHome: "首页", navProjects: "项目",
+        eyebrow: "macOS 工具 · 开源",
+        lead: "一个极简的 macOS 菜单栏工具，把剪贴板里的富文本剥离成纯文本。",
+        btnDownload: "下载 macOS 版", btnDocs: "文档", btnSource: "GitHub 源码",
+        hAbout: "简介",
+        about: "打开纯文本模式后，每次复制都会被还原为纯文本：字体、颜色等富文本格式被丢弃，而 Unicode、Emoji、制表符与换行都会保留。关闭后，剪贴板行为与 macOS 原生完全一致。",
+        hFeatures: "亮点",
+        f1: "仅驻留菜单栏——没有 Dock 图标，也没有主窗口",
+        f2: "液态玻璃面板，配一个大号滑动开关",
+        f3: "全局热键：F6 开启，F5 关闭",
+        f4: "开机自动启动",
+        f5: "设置内可切换 English / 中文",
+        f6: "不联网、不申请权限、不记录历史",
+        hStack: "技术栈"
+      },
+      "yue": {
+        title: "Clipclean — macOS 純文字架生",
+        navHome: "首頁", navProjects: "專案",
+        eyebrow: "macOS 架生 · 開源",
+        lead: "一個細細粒嘅 macOS 選單列架生，將剪貼簿入面嘅富文本變做純文字。",
+        btnDownload: "下載 macOS 版", btnDocs: "文件", btnSource: "GitHub 原始碼",
+        hAbout: "簡介",
+        about: "開咗純文字模式之後，每次複製都會還原做純文字：字體、顏色等富文本格式會掉走，但 Unicode、Emoji、Tab 同換行都會保留。熄咗之後，剪貼簿嘅行為同 macOS 原生一模一樣。",
+        hFeatures: "亮點",
+        f1: "淨係喺選單列——冇 Dock 圖示，又冇主視窗",
+        f2: "液態玻璃面板，配一個大掣",
+        f3: "全局熱鍵：F6 開，F5 熄",
+        f4: "開機自動啟動",
+        f5: "設定入面可以切 English / 中文",
+        f6: "唔連網、唔要權限、唔記歷史",
+        hStack: "技術棧"
+      }
+    };
+
     function applyLang(lang) {
-      document.getElementById("doc-en").hidden = lang !== "en";
-      document.getElementById("doc-zh").hidden = lang !== "zh";
-      document.documentElement.lang = lang === "zh" ? "zh-Hans" : "en";
-      document.querySelectorAll(".lang button").forEach(function (b) {
-        b.classList.toggle("active", b.getAttribute("data-lang") === lang);
+      var dict = I18N[lang] || I18N.en;
+      document.documentElement.lang = lang;
+      document.title = dict.title;
+      document.querySelectorAll("[data-i18n]").forEach(function (el) {
+        var key = el.getAttribute("data-i18n");
+        if (dict[key] !== undefined) el.textContent = dict[key];
+      });
+      document.querySelectorAll(".lang button").forEach(function (btn) {
+        btn.classList.toggle("active", btn.getAttribute("data-lang") === lang);
       });
       localStorage.setItem("lang", lang);
     }
+
     function pickLang() {
-      var s = localStorage.getItem("lang");
-      if (s === "en" || s === "zh") return s;
-      return (navigator.language || "en").toLowerCase().indexOf("zh") === 0 ? "zh" : "en";
+      var saved = localStorage.getItem("lang");
+      if (saved && I18N[saved]) return saved;
+      var nav = (navigator.language || "en").toLowerCase();
+      if (nav.indexOf("zh") === 0) return /hant|hk|tw|mo|yue/.test(nav) ? "yue" : "zh-Hans";
+      return "en";
     }
+
     (function () {
       var root = document.documentElement;
-      var t = localStorage.getItem("theme");
-      if (t) root.setAttribute("data-theme", t);
+      var savedTheme = localStorage.getItem("theme");
+      if (savedTheme) root.setAttribute("data-theme", savedTheme);
       document.getElementById("theme").addEventListener("click", function () {
-        var n = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
-        root.setAttribute("data-theme", n);
-        localStorage.setItem("theme", n);
+        var next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+        root.setAttribute("data-theme", next);
+        localStorage.setItem("theme", next);
       });
-      document.querySelectorAll(".lang button").forEach(function (b) {
-        b.addEventListener("click", function () { applyLang(b.getAttribute("data-lang")); });
+      document.querySelectorAll(".lang button").forEach(function (btn) {
+        btn.addEventListener("click", function () { applyLang(btn.getAttribute("data-lang")); });
       });
+      document.getElementById("year").textContent = new Date().getFullYear();
       applyLang(pickLang());
     })();
   </script>
