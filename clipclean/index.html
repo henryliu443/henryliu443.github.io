@@ -76,6 +76,9 @@
     @media (max-width: 620px) { .features { grid-template-columns: 1fr; } }
     .chips { display: flex; flex-wrap: wrap; gap: .5rem; }
     .chip { font-size: .85rem; color: var(--muted); border: 1px solid var(--line); background: var(--card); border-radius: 999px; padding: .35rem .85rem; }
+    .shots { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem; align-items: start; }
+    @media (max-width: 620px) { .shots { grid-template-columns: 1fr; } }
+    .shots img { width: 100%; height: auto; border: 1px solid var(--line); border-radius: 14px; background: var(--card); box-shadow: var(--shadow); }
 
     footer {
       padding: 2.5rem 0 4rem; border-top: 1px solid var(--line);
@@ -133,6 +136,14 @@
     </section>
 
     <section>
+      <h2 data-i18n="hScreens">Screenshots</h2>
+      <div class="shots">
+        <img src="screenshots/01-main.png" alt="Clipclean main panel" loading="lazy">
+        <img src="screenshots/02-settings.png" alt="Clipclean settings" loading="lazy">
+      </div>
+    </section>
+
+    <section>
       <h2 data-i18n="hFeatures">Highlights</h2>
       <ul class="features">
         <li data-i18n="f1">Menu bar only — no Dock icon, no main window</li>
@@ -172,7 +183,7 @@
         eyebrow: "macOS Utility · Open Source",
         lead: "A tiny macOS menu bar utility that strips rich text from the clipboard.",
         btnDownload: "Download for macOS", btnReadme: "GitHub README", btnSource: "Source on GitHub",
-        hAbout: "About",
+        hAbout: "About", hScreens: "Screenshots",
         about: "When Plain Text Mode is on, every copy is reduced to its plain-text representation: fonts, colors and other rich flavours are dropped, while Unicode, emoji, tabs and line breaks are preserved. When it is off, the clipboard behaves exactly as macOS normally does.",
         hFeatures: "Highlights",
         f1: "Menu bar only — no Dock icon, no main window",
@@ -189,7 +200,7 @@
         eyebrow: "macOS 工具 · 开源",
         lead: "一个极简的 macOS 菜单栏工具，把剪贴板里的富文本剥离成纯文本。",
         btnDownload: "下载 macOS 版", btnReadme: "GitHub README", btnSource: "GitHub 源码",
-        hAbout: "简介",
+        hAbout: "简介", hScreens: "截图",
         about: "打开纯文本模式后，每次复制都会被还原为纯文本：字体、颜色等富文本格式被丢弃，而 Unicode、Emoji、制表符与换行都会保留。关闭后，剪贴板行为与 macOS 原生完全一致。",
         hFeatures: "亮点",
         f1: "仅驻留菜单栏——没有 Dock 图标，也没有主窗口",
@@ -206,7 +217,7 @@
         eyebrow: "macOS 架生 · 開源",
         lead: "一個細細粒嘅 macOS 選單列架生，將剪貼簿入面嘅富文本變做純文字。",
         btnDownload: "下載 macOS 版", btnReadme: "GitHub README", btnSource: "GitHub 原始碼",
-        hAbout: "簡介",
+        hAbout: "簡介", hScreens: "截圖",
         about: "開咗純文字模式之後，每次複製都會還原做純文字：字體、顏色等富文本格式會掉走，但 Unicode、Emoji、Tab 同換行都會保留。熄咗之後，剪貼簿嘅行為同 macOS 原生一模一樣。",
         hFeatures: "亮點",
         f1: "淨係喺選單列——冇 Dock 圖示，又冇主視窗",
