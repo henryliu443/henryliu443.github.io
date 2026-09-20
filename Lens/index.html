@@ -3,293 +3,376 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lens — Multi-Perspective Analysis for iOS</title>
-  <meta name="description" content="One input, multiple perspectives. A structured multi-perspective analysis app for iOS.">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔎</text></svg>">
+  <title>Lens — Documentation</title>
+  <meta name="description" content="Lens documentation (README).">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📄</text></svg>">
   <style>
     :root {
       --bg: #fbfbfd; --fg: #111113; --muted: #6b6b74; --line: #e6e6ea; --card: #ffffff;
-      --accent: #2f6bff; --accent-2: #8b5cf6; --accent-fg: #ffffff;
+      --accent: #2f6bff; --accent-2: #8b5cf6; --accent-fg: #ffffff; --code-bg: #f4f4f7;
       --shadow: 0 1px 2px rgba(17,17,19,.04), 0 8px 24px rgba(17,17,19,.05);
     }
     [data-theme="dark"] {
       --bg: #08080a; --fg: #f5f5f7; --muted: #9a9aa3; --line: #24242a; --card: #121216;
-      --accent: #6f9bff; --accent-2: #b18cff;
+      --accent: #6f9bff; --accent-2: #b18cff; --code-bg: #16161b;
       --shadow: 0 1px 2px rgba(0,0,0,.4), 0 12px 32px rgba(0,0,0,.35);
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
         "PingFang SC", "PingFang HK", "Microsoft JhengHei", "Microsoft YaHei", sans-serif;
-      background: var(--bg); color: var(--fg); line-height: 1.65; -webkit-font-smoothing: antialiased;
+      background: var(--bg); color: var(--fg); line-height: 1.7; -webkit-font-smoothing: antialiased;
     }
-    a { color: inherit; }
-    .wrap { max-width: 900px; margin: 0 auto; padding: 0 1.5rem; }
-    .accent-text {
-      background: linear-gradient(100deg, var(--accent), var(--accent-2));
-      -webkit-background-clip: text; background-clip: text; color: transparent;
-    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
     nav {
       position: sticky; top: 0; z-index: 50;
       backdrop-filter: saturate(180%) blur(14px); -webkit-backdrop-filter: saturate(180%) blur(14px);
       background: color-mix(in srgb, var(--bg) 78%, transparent); border-bottom: 1px solid var(--line);
     }
-    .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 60px; }
-    .brand { font-weight: 700; letter-spacing: -0.01em; text-decoration: none; }
-    .nav-right { display: flex; align-items: center; gap: 1.1rem; }
+    .nav-inner { max-width: 860px; margin: 0 auto; padding: 0 1.5rem; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+    .brand { font-weight: 700; letter-spacing: -0.01em; text-decoration: none; color: var(--fg); }
+    .nav-right { display: flex; align-items: center; gap: 1rem; }
     .nav-links { display: flex; align-items: center; gap: 1.25rem; font-size: .9rem; }
-    .nav-links a { text-decoration: none; color: var(--muted); }
+    .nav-links a { color: var(--muted); }
     .nav-links a:hover { color: var(--fg); }
     .lang { display: inline-flex; border: 1px solid var(--line); border-radius: 9px; overflow: hidden; background: var(--card); }
-    .lang button { border: 0; background: transparent; color: var(--muted); font: inherit; font-size: .78rem; font-weight: 600; padding: .3rem .5rem; cursor: pointer; }
+    .lang button { border: 0; background: transparent; color: var(--muted); font: inherit; font-size: .78rem; font-weight: 600; padding: .3rem .55rem; cursor: pointer; }
     .lang button.active { background: var(--accent); color: var(--accent-fg); }
     #theme { border: 1px solid var(--line); background: var(--card); color: var(--fg); width: 34px; height: 34px; border-radius: 9px; cursor: pointer; font-size: 15px; line-height: 1; }
     #theme:hover { border-color: var(--accent); }
     @media (max-width: 720px) { .nav-links { display: none; } }
 
-    header { padding: 4.5rem 0 2rem; position: relative; overflow: hidden; }
-    header::before {
-      content: ""; position: absolute; inset: -40% 30% auto -10%; height: 460px;
-      background: radial-gradient(closest-side, color-mix(in srgb, var(--accent) 22%, transparent), transparent 70%);
-      filter: blur(10px); pointer-events: none;
-    }
-    .eyebrow { font-size: .82rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
-    h1 { margin-top: 1rem; font-size: clamp(2.4rem, 7vw, 3.8rem); line-height: 1.03; letter-spacing: -0.035em; font-weight: 800; }
-    .lead { margin-top: 1.25rem; max-width: 42rem; font-size: clamp(1.05rem, 2.3vw, 1.25rem); color: var(--muted); }
-    .cta { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 2rem; }
-    .btn {
-      display: inline-flex; align-items: center; gap: .45rem; padding: .6rem 1.05rem; border-radius: 10px;
-      font-size: .9rem; font-weight: 600; text-decoration: none; border: 1px solid var(--line);
-      background: var(--card); color: var(--fg); transition: transform .12s ease, border-color .15s ease, opacity .15s ease;
-    }
-    .btn:hover { transform: translateY(-1px); border-color: var(--accent); }
-    .btn.primary { background: linear-gradient(100deg, var(--accent), var(--accent-2)); color: var(--accent-fg); border-color: transparent; box-shadow: 0 6px 18px color-mix(in srgb, var(--accent) 30%, transparent); }
-    .btn.primary:hover { opacity: .93; }
-
-    section { padding: 3rem 0; border-top: 1px solid var(--line); }
-    h2 { font-size: .8rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin-bottom: 1.5rem; }
-    .prose p { color: var(--muted); max-width: 46rem; }
-    .prose p + p { margin-top: 1rem; }
-    .features { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: .6rem 1.5rem; font-size: .94rem; }
-    .features li { padding-left: 1.4rem; position: relative; }
-    .features li::before { content: "→"; position: absolute; left: 0; color: var(--accent); }
-    @media (max-width: 620px) { .features { grid-template-columns: 1fr; } }
-
-    .lenses { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
-    @media (max-width: 720px) { .lenses { grid-template-columns: 1fr; } }
-    .lens { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 1.25rem; box-shadow: var(--shadow); }
-    .lens h3 { font-size: 1rem; letter-spacing: -0.01em; }
-    .lens p { color: var(--muted); font-size: .88rem; margin-top: .4rem; }
-
-    .chips { display: flex; flex-wrap: wrap; gap: .5rem; }
-    .chip { font-size: .85rem; color: var(--muted); border: 1px solid var(--line); background: var(--card); border-radius: 999px; padding: .35rem .85rem; }
-
-    footer {
-      padding: 2.5rem 0 4rem; border-top: 1px solid var(--line);
-      display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem;
-      color: var(--muted); font-size: .88rem;
-    }
-    footer a { text-decoration: none; }
-    footer a:hover { color: var(--accent); }
-    .footer-links { display: flex; gap: 1.25rem; }
+    main { max-width: 860px; margin: 0 auto; padding: 2.5rem 1.5rem 5rem; }
+    .doc { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 2.25rem 2rem; box-shadow: var(--shadow); }
+    @media (max-width: 620px) { .doc { padding: 1.5rem 1.15rem; } }
+    .doc h1 { font-size: 1.9rem; letter-spacing: -0.02em; margin: 0 0 1rem; }
+    .doc h2 { font-size: 1.3rem; letter-spacing: -0.02em; margin: 2.2rem 0 .8rem; padding-bottom: .4rem; border-bottom: 1px solid var(--line); }
+    .doc h3 { font-size: 1.08rem; margin: 1.6rem 0 .5rem; }
+    .doc h4 { font-size: .98rem; margin: 1.2rem 0 .4rem; }
+    .doc p { margin: .8rem 0; }
+    .doc ul, .doc ol { margin: .8rem 0 .8rem 1.4rem; }
+    .doc li { margin: .3rem 0; }
+    .doc img { max-width: 100%; border: 1px solid var(--line); border-radius: 10px; margin: .4rem 0; }
+    .doc code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .88em; background: var(--code-bg); padding: .12em .38em; border-radius: 5px; }
+    .doc pre { background: var(--code-bg); border: 1px solid var(--line); border-radius: 10px; padding: 1rem; overflow-x: auto; margin: 1rem 0; }
+    .doc pre code { background: none; padding: 0; font-size: .85rem; }
+    .doc blockquote { border-left: 3px solid var(--accent); background: color-mix(in srgb, var(--accent) 7%, transparent); padding: .6rem 1rem; border-radius: 0 8px 8px 0; margin: 1rem 0; color: var(--muted); }
+    .doc table { border-collapse: collapse; width: 100%; margin: 1rem 0; font-size: .92rem; display: block; overflow-x: auto; }
+    .doc th, .doc td { border: 1px solid var(--line); padding: .5rem .7rem; text-align: left; vertical-align: top; }
+    .doc th { background: var(--code-bg); font-weight: 600; }
+    .doc hr { border: 0; border-top: 1px solid var(--line); margin: 2rem 0; }
+    .doc a { text-decoration: none; }
+    .doc a:hover { text-decoration: underline; }
+    [hidden] { display: none !important; }
   </style>
 </head>
 <body>
   <nav>
-    <div class="wrap nav-inner">
+    <div class="nav-inner">
       <a class="brand" href="/">Henry Liu</a>
       <div class="nav-right">
         <div class="nav-links">
-          <a href="/" data-i18n="navHome">Home</a>
-          <a href="/#projects" data-i18n="navProjects">Projects</a>
+          <a href="/">Home</a>
           <a href="https://github.com/henryliu443/Lens">GitHub</a>
         </div>
         <div class="lang" role="group" aria-label="Language">
           <button type="button" data-lang="en">EN</button>
-          <button type="button" data-lang="zh-Hans">简</button>
-          <button type="button" data-lang="yue">廣</button>
+          <button type="button" data-lang="zh">中文</button>
         </div>
         <button id="theme" type="button" aria-label="Toggle theme">◐</button>
       </div>
     </div>
   </nav>
-
-  <div class="wrap">
-    <header>
-      <p class="eyebrow" data-i18n="eyebrow">iOS App · Open Source</p>
-      <h1>Lens</h1>
-      <p class="lead" data-i18n="lead">
-        Same input, seen from another angle — structured multi-perspective analysis.
-      </p>
-      <div class="cta">
-        <a class="btn primary" href="https://github.com/henryliu443/Lens" data-i18n="btnSource">Source on GitHub</a>
-        <a class="btn" href="https://github.com/henryliu443/Lens#readme" data-i18n="btnReadme">Read the README</a>
-      </div>
-    </header>
-
-    <section>
-      <h2 data-i18n="hAbout">About</h2>
-      <div class="prose">
-        <p data-i18n="about">
-          Lens is a native iOS multi-perspective analysis tool: enter a piece of text, pick a Lens,
-          and the AI returns several sections following that Lens's fixed structure. It is not a chat
-          tool — it is structured, multi-perspective review.
-        </p>
-      </div>
-    </section>
-
-    <section>
-      <h2 data-i18n="hLenses">The Three Lenses</h2>
-      <div class="lenses">
-        <div class="lens">
-          <h3 data-i18n="l1Title">Decision Review</h3>
-          <p data-i18n="l1Desc">Calm, structured decision analysis.</p>
-        </div>
-        <div class="lens">
-          <h3 data-i18n="l2Title">Writing Review</h3>
-          <p data-i18n="l2Desc">A strict but friendly editor.</p>
-        </div>
-        <div class="lens">
-          <h3 data-i18n="l3Title">Communication Review</h3>
-          <p data-i18n="l3Desc">Anticipates how the other side will read it.</p>
-        </div>
-      </div>
-    </section>
-
-    <section>
-      <h2 data-i18n="hFeatures">Highlights</h2>
-      <ul class="features">
-        <li data-i18n="f1">Three genuinely different reading perspectives</li>
-        <li data-i18n="f2">Fixed, structured output per lens</li>
-        <li data-i18n="f3">OpenAI, Anthropic, DeepSeek, or Local (offline)</li>
-        <li data-i18n="f4">History persisted with SwiftData</li>
-        <li data-i18n="f5">API keys kept in the Keychain</li>
-        <li data-i18n="f6">Zero third-party dependencies</li>
-      </ul>
-    </section>
-
-    <section>
-      <h2 data-i18n="hStack">Stack</h2>
-      <div class="chips">
-        <span class="chip">Swift</span>
-        <span class="chip">iOS 17+</span>
-        <span class="chip">SwiftUI · MVVM</span>
-        <span class="chip">SwiftData</span>
-        <span class="chip">Apache-2.0</span>
-      </div>
-    </section>
-
-    <footer>
-      <span>© <span id="year">2026</span> Henry Liu</span>
-      <span class="footer-links">
-        <a href="/" data-i18n="navHome">Home</a>
-        <a href="https://github.com/henryliu443/Lens" data-i18n="btnSource">Source on GitHub</a>
-      </span>
-    </footer>
-  </div>
-
+  <main>
+    <article class="doc" id="doc-en"><p><code>dev0.0.1</code></p>
+<p>Same input, seen from another angle.</p>
+<p>Lens is a native iOS &quot;multi-perspective analysis&quot; tool: the user enters a piece of text, picks a <strong>Lens (analysis perspective)</strong>, and the AI returns several sections of analysis following that Lens's fixed structure. It is not a chat tool — it is structured multi-perspective review.</p>
+<h2>The Three Lenses</h2>
+<table>
+<thead>
+<tr>
+<th>Lens</th>
+<th>Description</th>
+<th>Output structure</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Decision Review <code>decision-review</code></td>
+<td>Calm, structured decision analysis</td>
+<td>Key considerations / Blind spots / Alternative perspectives / Next steps</td>
+</tr>
+<tr>
+<td>Writing Review <code>writing-review</code></td>
+<td>A strict but friendly editor</td>
+<td>Clarity / Structure / Weak points / Revision suggestions / Example revision</td>
+</tr>
+<tr>
+<td>Communication Review <code>communication-review</code></td>
+<td>Anticipates how the other side will read it</td>
+<td>Likely interpretation / Potential misunderstandings / Communication risks / More precise wording / Possible replies</td>
+</tr>
+</tbody>
+</table>
+<p>The three Lenses are three genuinely different ways of reading the same input: each has its own system role, section structure, guidance, and recommendation keywords.</p>
+<h2>Tech Stack</h2>
+<ul>
+<li>iOS 17+ only (iPhone + iPad), a single Xcode project</li>
+<li>SwiftUI + MVVM, <code>@Observable</code> ViewModels, no business logic in Views</li>
+<li>SwiftData for history persistence</li>
+<li>URLSession for networking, Security / Keychain for API keys</li>
+<li>Zero third-party dependencies</li>
+</ul>
+<h2>Directory Structure</h2>
+<pre><code>com.lens/
+├── LensApp.swift
+├── Models/
+│   ├── AnalysisLens.swift        # 3 Lens definitions + local recommendation rules
+│   ├── SectionSpec.swift
+│   ├── Analysis.swift
+│   ├── AnalysisDepth.swift       # AnalysisDepth + ResponseTone
+│   ├── AIProvider.swift          # provider / model / baseURL
+│   └── Record.swift
+├── Services/
+│   ├── AIServiceProtocol.swift   # protocol + factory + errors + shared request helper + tolerant parser
+│   ├── OpenAIService.swift
+│   ├── AnthropicService.swift
+│   ├── DeepSeekService.swift
+│   ├── LocalAnalysisService.swift
+│   ├── PromptBuilder.swift
+│   └── KeychainManager.swift
+├── ViewModels/
+│   ├── AnalysisViewModel.swift
+│   ├── SettingsViewModel.swift
+│   └── HistoryViewModel.swift
+└── Views/
+    ├── MainTabView.swift
+    ├── HomeView.swift
+    ├── ResultCardView.swift
+    ├── HistoryView.swift
+    ├── SettingsView.swift
+    ├── OnboardingView.swift
+    └── Components/
+        ├── InputCard.swift
+        ├── LensPickerView.swift
+        ├── ErrorBannerView.swift
+        └── ReadableWidth.swift
+</code></pre>
+<h2>AI Providers</h2>
+<table>
+<thead>
+<tr>
+<th>Provider</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OpenAI</td>
+<td><code>/v1/chat/completions</code>, Bearer auth</td>
+</tr>
+<tr>
+<td>Anthropic</td>
+<td><code>/v1/messages</code>, <code>x-api-key</code> + <code>anthropic-version: 2023-06-01</code></td>
+</tr>
+<tr>
+<td>DeepSeek</td>
+<td><code>/v1/chat/completions</code>; <code>deepseek-reasoner</code> folds system into user, 120s timeout</td>
+</tr>
+<tr>
+<td>Local (offline)</td>
+<td>Bundled sample results, no key needed, works offline</td>
+</tr>
+</tbody>
+</table>
+<p>Errors map uniformly to <code>AIServiceError</code>: <code>noAPIKey / invalidResponse / networkError / rateLimited / invalidKey / parseError</code>, with 401 → invalidKey and 429 → rateLimited.</p>
+<h2>Tolerant Parsing</h2>
+<p><code>parseSections(_:lens:)</code> tries in order: strip markdown wrapper → extract JSON → <code>JSONDecoder</code> → <code>JSONSerialization</code> (with Chinese-title key fallback) → map by line order → throw <code>parseError</code>. It tolerates markdown-wrapped responses, missing keys, and mixed Chinese/English keys.</p>
+<h2>Build &amp; Run</h2>
+<ol>
+<li>Open <code>com.lens/com.lens.xcodeproj</code> in Xcode</li>
+<li>Select an iOS 17+ simulator or device</li>
+<li>On first launch, finish onboarding: pick a provider (you can pick &quot;Local (offline)&quot;) and enter an API key</li>
+<li>Enter text on Home → choose/accept the recommended Lens → Analyze → the result is saved to history automatically</li>
+</ol>
+<p>Command-line build:</p>
+<pre><code class="language-bash">xcodebuild -project com.lens/com.lens.xcodeproj -scheme com.lens \
+  -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' build
+</code></pre>
+<h2>Privacy</h2>
+<ul>
+<li>API keys are stored only in the local Keychain (service: <code>com.henryliu.lens.apikeys</code>) and never uploaded</li>
+<li>No accounts, no cloud sync, no backend</li>
+<li>History is stored locally via SwiftData</li>
+</ul>
+<h2>Non-Goals</h2>
+<ul>
+<li>No chat/conversational interaction — only &quot;one input → structured analysis&quot;</li>
+<li>No Android / cross-platform / shared layer</li>
+<li>No mental-health, emotion, or crisis-intervention content</li>
+</ul>
+<h2>License</h2>
+<p>Apache-2.0. See <code>LICENSE</code>.</p>
+</article>
+    <article class="doc" id="doc-zh" hidden><p><code>dev0.0.1</code></p>
+<p>同一段输入，换一个视角看。</p>
+<p>Lens 是一个 iOS 原生「多视角分析」工具：用户输入一段文字，选择一个 <strong>Lens（分析视角）</strong>，AI 按该视角固定的结构返回多段分析结果。它不是聊天工具，而是结构化的多视角审视。</p>
+<h2>三个 Lens</h2>
+<table>
+<thead>
+<tr>
+<th>Lens</th>
+<th>说明</th>
+<th>输出结构</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>决策复盘 <code>decision-review</code></td>
+<td>冷静、结构化的决策分析</td>
+<td>关键考量 / 盲点 / 替代视角 / 下一步</td>
+</tr>
+<tr>
+<td>写作复盘 <code>writing-review</code></td>
+<td>严格但友好的文字编辑</td>
+<td>清晰度 / 结构 / 薄弱点 / 修改建议 / 改写示例</td>
+</tr>
+<tr>
+<td>沟通复盘 <code>communication-review</code></td>
+<td>预判对方会如何理解</td>
+<td>对方的可能理解 / 可能的误解 / 沟通风险 / 更精确的表达 / 可能的后续回复</td>
+</tr>
+</tbody>
+</table>
+<p>三个 Lens 是看同一段输入的三种真正不同的方式：各自的角色设定、section 结构、guidance 与推荐关键词都不同。</p>
+<h2>技术栈</h2>
+<ul>
+<li>仅 iOS 17+（iPhone + iPad），单一 Xcode 工程</li>
+<li>SwiftUI + MVVM，<code>@Observable</code> ViewModel，View 不含业务逻辑</li>
+<li>SwiftData 持久化历史记录</li>
+<li>URLSession 网络，Security / Keychain 保存 API Key</li>
+<li>零第三方依赖</li>
+</ul>
+<h2>目录结构</h2>
+<pre><code>com.lens/
+├── LensApp.swift
+├── Models/
+│   ├── AnalysisLens.swift        # 3 个 Lens 定义 + 本地推荐规则
+│   ├── SectionSpec.swift
+│   ├── Analysis.swift
+│   ├── AnalysisDepth.swift       # AnalysisDepth + ResponseTone
+│   ├── AIProvider.swift          # provider / model / baseURL
+│   └── Record.swift
+├── Services/
+│   ├── AIServiceProtocol.swift   # 协议 + 工厂 + 错误 + 共享请求 helper + 容错解析器
+│   ├── OpenAIService.swift
+│   ├── AnthropicService.swift
+│   ├── DeepSeekService.swift
+│   ├── LocalAnalysisService.swift
+│   ├── PromptBuilder.swift
+│   └── KeychainManager.swift
+├── ViewModels/
+│   ├── AnalysisViewModel.swift
+│   ├── SettingsViewModel.swift
+│   └── HistoryViewModel.swift
+└── Views/
+    ├── MainTabView.swift
+    ├── HomeView.swift
+    ├── ResultCardView.swift
+    ├── HistoryView.swift
+    ├── SettingsView.swift
+    ├── OnboardingView.swift
+    └── Components/
+        ├── InputCard.swift
+        ├── LensPickerView.swift
+        ├── ErrorBannerView.swift
+        └── ReadableWidth.swift
+</code></pre>
+<h2>AI 服务商</h2>
+<table>
+<thead>
+<tr>
+<th>服务商</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OpenAI</td>
+<td><code>/v1/chat/completions</code>，Bearer 鉴权</td>
+</tr>
+<tr>
+<td>Anthropic</td>
+<td><code>/v1/messages</code>，<code>x-api-key</code> + <code>anthropic-version: 2023-06-01</code></td>
+</tr>
+<tr>
+<td>DeepSeek</td>
+<td><code>/v1/chat/completions</code>；<code>deepseek-reasoner</code> 将 system 拼入 user，超时 120s</td>
+</tr>
+<tr>
+<td>本地（离线）</td>
+<td>预置示例结果，无需 Key，可离线体验</td>
+</tr>
+</tbody>
+</table>
+<p>错误统一映射为 <code>AIServiceError</code>：<code>noAPIKey / invalidResponse / networkError / rateLimited / invalidKey / parseError</code>，401 → invalidKey，429 → rateLimited。</p>
+<h2>容错解析</h2>
+<p><code>parseSections(_:lens:)</code> 依次尝试：去 markdown 包裹 → 截取 JSON → <code>JSONDecoder</code> → <code>JSONSerialization</code>（含中文标题 key 兜底）→ 按行顺序映射 → 抛 <code>parseError</code>。对带 markdown、缺 key、中英 key 的响应都能容错。</p>
+<h2>构建与运行</h2>
+<ol>
+<li>用 Xcode 打开 <code>com.lens/com.lens.xcodeproj</code></li>
+<li>选择 iOS 17+ 模拟器或真机</li>
+<li>首次启动完成 onboarding：选择服务商（可直接选「本地（离线）」）并填写 API Key</li>
+<li>首页输入文字 → 选择/接受推荐 Lens → 分析 → 结果自动存入历史</li>
+</ol>
+<p>命令行构建：</p>
+<pre><code class="language-bash">xcodebuild -project com.lens/com.lens.xcodeproj -scheme com.lens \
+  -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' build
+</code></pre>
+<h2>隐私</h2>
+<ul>
+<li>API Key 仅保存在本机 Keychain（service：<code>com.henryliu.lens.apikeys</code>），不会上传</li>
+<li>无账号、无云同步、无后端</li>
+<li>历史记录保存在本机 SwiftData</li>
+</ul>
+<h2>非目标</h2>
+<ul>
+<li>不做聊天/对话式交互，只做「一次输入 → 结构化分析」</li>
+<li>不做 Android / 跨平台 / 共享层</li>
+<li>不做心理健康、情绪、危机干预相关内容</li>
+</ul>
+<h2>许可证 / License</h2>
+<p>Apache-2.0. 详见 <code>LICENSE</code> / See <code>LICENSE</code>.</p>
+</article>
+  </main>
   <script>
-    var I18N = {
-      "en": {
-        title: "Lens — Multi-Perspective Analysis for iOS",
-        navHome: "Home", navProjects: "Projects",
-        eyebrow: "iOS App · Open Source",
-        lead: "Same input, seen from another angle — structured multi-perspective analysis.",
-        btnSource: "Source on GitHub", btnReadme: "Read the README",
-        hAbout: "About",
-        about: "Lens is a native iOS multi-perspective analysis tool: enter a piece of text, pick a Lens, and the AI returns several sections following that Lens's fixed structure. It is not a chat tool — it is structured, multi-perspective review.",
-        hLenses: "The Three Lenses",
-        l1Title: "Decision Review", l1Desc: "Calm, structured decision analysis.",
-        l2Title: "Writing Review", l2Desc: "A strict but friendly editor.",
-        l3Title: "Communication Review", l3Desc: "Anticipates how the other side will read it.",
-        hFeatures: "Highlights",
-        f1: "Three genuinely different reading perspectives",
-        f2: "Fixed, structured output per lens",
-        f3: "OpenAI, Anthropic, DeepSeek, or Local (offline)",
-        f4: "History persisted with SwiftData",
-        f5: "API keys kept in the Keychain",
-        f6: "Zero third-party dependencies",
-        hStack: "Stack"
-      },
-      "zh-Hans": {
-        title: "Lens — iOS 多视角分析工具",
-        navHome: "首页", navProjects: "项目",
-        eyebrow: "iOS 应用 · 开源",
-        lead: "同一段输入，换多个角度看——结构化多视角分析。",
-        btnSource: "GitHub 源码", btnReadme: "阅读 README",
-        hAbout: "简介",
-        about: "Lens 是一款原生 iOS「多视角分析」工具：输入一段文字，选择一个 Lens（分析视角），AI 就会按该 Lens 固定的结构返回若干段分析。它不是聊天工具，而是结构化的多视角审阅。",
-        hLenses: "三个视角",
-        l1Title: "决策审阅", l1Desc: "冷静、结构化的决策分析。",
-        l2Title: "写作审阅", l2Desc: "一位严格又友好的编辑。",
-        l3Title: "沟通审阅", l3Desc: "预判对方会如何解读。",
-        hFeatures: "亮点",
-        f1: "三种真正不同的阅读视角",
-        f2: "每个视角都有固定、结构化的输出",
-        f3: "支持 OpenAI、Anthropic、DeepSeek 或本地离线",
-        f4: "使用 SwiftData 持久化历史记录",
-        f5: "API Key 保存在 Keychain",
-        f6: "零第三方依赖",
-        hStack: "技术栈"
-      },
-      "yue": {
-        title: "Lens — iOS 多視角分析架生",
-        navHome: "首頁", navProjects: "專案",
-        eyebrow: "iOS App · 開源",
-        lead: "同一段輸入，換幾個角度睇——結構化多視角分析。",
-        btnSource: "GitHub 原始碼", btnReadme: "睇下 README",
-        hAbout: "簡介",
-        about: "Lens 係一個原生 iOS「多視角分析」工具：輸入一段文字，揀一個 Lens（分析視角），AI 就會跟嗰個 Lens 固定嘅結構回傳幾段分析。佢唔係聊天工具，而係結構化嘅多視角審閱。",
-        hLenses: "三個視角",
-        l1Title: "決策審閱", l1Desc: "冷靜、結構化嘅決策分析。",
-        l2Title: "寫作審閱", l2Desc: "一個嚴格又友善嘅編輯。",
-        l3Title: "溝通審閱", l3Desc: "預判對方會點樣解讀。",
-        hFeatures: "亮點",
-        f1: "三種真正唔同嘅閱讀視角",
-        f2: "每個視角都有固定、結構化嘅輸出",
-        f3: "支援 OpenAI、Anthropic、DeepSeek 或者本地離線",
-        f4: "用 SwiftData 儲存歷史",
-        f5: "API Key 放喺 Keychain",
-        f6: "零第三方依賴",
-        hStack: "技術棧"
-      }
-    };
-
     function applyLang(lang) {
-      var dict = I18N[lang] || I18N.en;
-      document.documentElement.lang = lang;
-      document.title = dict.title;
-      document.querySelectorAll("[data-i18n]").forEach(function (el) {
-        var key = el.getAttribute("data-i18n");
-        if (dict[key] !== undefined) el.textContent = dict[key];
-      });
-      document.querySelectorAll(".lang button").forEach(function (btn) {
-        btn.classList.toggle("active", btn.getAttribute("data-lang") === lang);
+      document.getElementById("doc-en").hidden = lang !== "en";
+      document.getElementById("doc-zh").hidden = lang !== "zh";
+      document.documentElement.lang = lang === "zh" ? "zh-Hans" : "en";
+      document.querySelectorAll(".lang button").forEach(function (b) {
+        b.classList.toggle("active", b.getAttribute("data-lang") === lang);
       });
       localStorage.setItem("lang", lang);
     }
-
     function pickLang() {
-      var saved = localStorage.getItem("lang");
-      if (saved && I18N[saved]) return saved;
-      var nav = (navigator.language || "en").toLowerCase();
-      if (nav.indexOf("zh") === 0) return /hant|hk|tw|mo|yue/.test(nav) ? "yue" : "zh-Hans";
-      return "en";
+      var s = localStorage.getItem("lang");
+      if (s === "en" || s === "zh") return s;
+      return (navigator.language || "en").toLowerCase().indexOf("zh") === 0 ? "zh" : "en";
     }
-
     (function () {
       var root = document.documentElement;
-      var savedTheme = localStorage.getItem("theme");
-      if (savedTheme) root.setAttribute("data-theme", savedTheme);
+      var t = localStorage.getItem("theme");
+      if (t) root.setAttribute("data-theme", t);
       document.getElementById("theme").addEventListener("click", function () {
-        var next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
-        root.setAttribute("data-theme", next);
-        localStorage.setItem("theme", next);
+        var n = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+        root.setAttribute("data-theme", n);
+        localStorage.setItem("theme", n);
       });
-      document.querySelectorAll(".lang button").forEach(function (btn) {
-        btn.addEventListener("click", function () { applyLang(btn.getAttribute("data-lang")); });
+      document.querySelectorAll(".lang button").forEach(function (b) {
+        b.addEventListener("click", function () { applyLang(b.getAttribute("data-lang")); });
       });
-      document.getElementById("year").textContent = new Date().getFullYear();
       applyLang(pickLang());
     })();
   </script>
