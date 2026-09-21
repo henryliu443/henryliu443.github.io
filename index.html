@@ -211,18 +211,18 @@
       <article class="project">
         <div class="project-top">
           <h3>DevConfig-Gen</h3>
-          <span class="badge" data-i18n="badgeOpen">Open Source Engine</span>
+          <span class="badge" data-i18n="badgeOpen">Provider-Driven Engine</span>
         </div>
         <p class="desc" data-i18n="projectDesc">
-          A lightweight, provider-based configuration engine designed to aggregate multi-source JSON/YAML configurations, run field-level validations, and produce deterministic environment targets with zero runtime overhead.
+          A provider-driven engine that turns structured JSON/YAML into validated, deterministic configuration. A single tiny provider contract is the only extension point — domain transforms and even WebUI field rendering stay pluggable, with zero runtime dependencies.
         </p>
         <ul class="features">
-          <li data-i18n="f1">Modular provider pipeline architecture</li>
-          <li data-i18n-html="f2">Deep merging with path-specific <code>--set</code> overrides</li>
-          <li data-i18n="f3">Strict schema validation &amp; path-level diagnostics</li>
-          <li data-i18n="f4">Unified CLI, interactive wizard, and Web Studio UI</li>
-          <li data-i18n-html="f5">Multi-target exports (JSON, YAML, <code>.env</code>)</li>
-          <li data-i18n="f6">Zero external runtime dependencies</li>
+          <li data-i18n="f1">Single extension point: the provider contract</li>
+          <li data-i18n-html="f2">Full-chain pluggable, incl. WebUI <code>widget</code> registry</li>
+          <li data-i18n="f3">Deep merging with path-specific --set overrides</li>
+          <li data-i18n="f4">Strict schema validation &amp; path-level diagnostics</li>
+          <li data-i18n-html="f5">Unified <code>CLI</code>, wizard, Web UI, and Python API</li>
+          <li data-i18n="f6">Deterministic output · zero external runtime dependencies</li>
         </ul>
         <div class="links">
           <a class="btn primary" href="https://henryliu443.github.io/DevConfig-Gen/docs/" data-i18n="btnDocs">Documentation</a>
@@ -336,14 +336,14 @@
         m2Title: "Deterministic", m2Sub: "Path-aware validation",
         m3Title: "Developer First", m3Sub: "CLI, Web & SDK ready",
         m4Title: "Open Source", m4Sub: "Apache 2.0 Licensed",
-        hProjects: "Featured Project", badgeOpen: "Open Source Engine",
-        projectDesc: "A lightweight, provider-based configuration engine designed to aggregate multi-source JSON/YAML configurations, run field-level validations, and produce deterministic environment targets with zero runtime overhead.",
-        f1: "Modular provider pipeline architecture",
-        f2: 'Deep merging with path-specific <code>--set</code> overrides',
-        f3: "Strict schema validation &amp; path-level diagnostics",
-        f4: "Unified CLI, interactive wizard, and Web Studio UI",
-        f5: 'Multi-target exports (JSON, YAML, <code>.env</code>)',
-        f6: "Zero external runtime dependencies",
+        hProjects: "Featured Project", badgeOpen: "Provider-Driven Engine",
+        projectDesc: "A provider-driven engine that turns structured JSON/YAML into validated, deterministic configuration. A single tiny provider contract is the only extension point — domain transforms and even WebUI field rendering stay pluggable, with zero runtime dependencies.",
+        f1: "Single extension point: the provider contract",
+        f2: 'Full-chain pluggable, incl. WebUI <code>widget</code> registry',
+        f3: "Deep merging with path-specific --set overrides",
+        f4: "Strict schema validation &amp; path-level diagnostics",
+        f5: 'Unified <code>CLI</code>, wizard, Web UI, and Python API',
+        f6: "Deterministic output · zero external runtime dependencies",
         btnDocs: "Documentation", btnSource: "GitHub Repository", btnArch: "Architecture Spec",
         hMore: "More Projects", badgeMac: "macOS · Windows", badgeIOS: "iOS", badgeSkill: "Runtime Control Layer",
         clipDesc: "A tiny native macOS and Windows utility that strips rich text from the clipboard.",
@@ -370,14 +370,14 @@
         m2Title: "确定性校验", m2Sub: "精确到字段路径的诊断",
         m3Title: "开发者优先", m3Sub: "涵盖 CLI、Web 与 SDK",
         m4Title: "开源共享", m4Sub: "基于 Apache 2.0 协议",
-        hProjects: "精选项目", badgeOpen: "开源引擎",
-        projectDesc: "一个轻量级、基于 Provider 架构的配置生成与校验引擎。它能将多源 JSON/YAML 动态合并，运行字段级类型校验，并零额外依赖地输出确定性的配置文件。",
-        f1: "模块化 Provider 流水线架构",
-        f2: '多源深度合并与指定路径 <code>--set</code> 覆盖',
-        f3: "严格的 Schema 校验与路径级故障定位",
-        f4: "集成 CLI、终端交互向导与 Web 工作台",
-        f5: '支持 JSON、YAML 及 <code>.env</code> 多格式导出',
-        f6: "零第三方运行时依赖",
+        hProjects: "精选项目", badgeOpen: "Provider 驱动引擎",
+        projectDesc: "一个 Provider 驱动的结构化配置生成与校验引擎，把 JSON/YAML 输入变成可校验、确定性的配置产物。极小的 Provider 契约是唯一扩展点——领域转换乃至 WebUI 字段渲染都可插拔，零运行时依赖。",
+        f1: "唯一扩展点：Provider 契约",
+        f2: '全链路可插拔，含 WebUI <code>widget</code> 注册表',
+        f3: "路径级 --set 深度合并与覆盖",
+        f4: "严格的 Schema 校验与路径级故障定位",
+        f5: '统一 <code>CLI</code>、终端向导、Web 工作台与 Python API',
+        f6: "确定性输出 · 零第三方运行时依赖",
         btnDocs: "项目文档", btnSource: "GitHub 仓库", btnArch: "架构设计说明",
         hMore: "更多项目", badgeMac: "macOS · Windows", badgeIOS: "iOS", badgeSkill: "运行时控制层",
         clipDesc: "一个原生支持 macOS 与 Windows 的极简剪贴板工具，把富文本剥离成纯文本。",
@@ -404,14 +404,14 @@
         m2Title: "穩定驗證", m2Sub: "準到欄位路徑嘅診斷",
         m3Title: "開發者優先", m3Sub: "支援 CLI、Web 同 SDK",
         m4Title: "開源共享", m4Sub: "採用 Apache 2.0 協議",
-        hProjects: "精選專案", badgeOpen: "開源引擎",
-        projectDesc: "一個輕量、以 Provider 爲核心嘅配置生成同驗證引擎。佢可以合併多個 JSON/YAML 輸入、套用欄位覆寫、做精準驗證，並輸出穩定嘅配置檔案。",
-        f1: "模組化 Provider 流水線架構",
-        f2: '多來源深度合併同指定路徑 <code>--set</code> 覆寫',
-        f3: "嚴格嘅 Schema 驗證同路徑級診斷",
-        f4: "整合 CLI、互動式向導同 Web 工作台",
-        f5: '支援 JSON、YAML 同 <code>.env</code> 多種格式輸出',
-        f6: "零第三方執行時依賴",
+        hProjects: "精選專案", badgeOpen: "Provider 驅動引擎",
+        projectDesc: "一個 Provider 驅動嘅結構化配置生成同校驗引擎，將 JSON/YAML 輸入變成可校驗、穩定嘅配置產物。極細嘅 Provider 契約係唯一擴展點——領域轉換甚至 WebUI 欄位渲染都可以 plug，零執行時依賴。",
+        f1: "唯一擴展點：Provider 契約",
+        f2: '全鏈路可 plug，含 WebUI <code>widget</code> 註冊表',
+        f3: "路徑級 --set 深度合併同覆寫",
+        f4: "嚴格嘅 Schema 驗證同路徑級診斷",
+        f5: '統一 <code>CLI</code>、終端向導、Web 工作台同 Python API',
+        f6: "穩定輸出 · 零第三方執行時依賴",
         btnDocs: "專案文件", btnSource: "GitHub 倉庫", btnArch: "架構設計說明",
         hMore: "更多專案", badgeMac: "macOS · Windows", badgeIOS: "iOS", badgeSkill: "執行時控制層",
         clipDesc: "一個原生支援 macOS 同 Windows 嘅細巧剪貼板架生，將 Rich text 剝成 Plain text。",
